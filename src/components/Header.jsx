@@ -21,20 +21,22 @@ const Logo = styled.div`
 
 const NavLinks = styled.nav`
   display: flex;
-  gap: 2rem;
-  
+  gap: 1rem;
+
   a {
     color: #ffffff;
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.3s ease;
-    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 0.5rem 0.75rem;
     border-radius: 4px;
-    
+    font-size: 0.9rem;
+
     &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.3);
+      color: #000000;
     }
-    
+
     &.active {
       background-color: rgba(255, 255, 255, 0.3);
     }
@@ -50,10 +52,11 @@ function Header() {
         <Logo>Stay<span style={{ color: 'black' }}>Easy</span></Logo>
       </Link>
       <NavLinks>
-        <Link to="/" className={path === '/' ? 'active' : ''}>What's Included</Link>
-        <Link to="/rooms" className={path === '/rooms' ? 'active' : ''}>Stories</Link>
-        <Link to="/about" className={path === '/about' ? 'active' : ''}>Our Why</Link>
-        <Link to="/contact" className={path === '/contact' ? 'active' : ''}>FAQs</Link>
+        <Link to="/" className={path === '/' ? 'active' : ''}>Home</Link>
+        <Link to="/rooms" className={path === '/rooms' ? 'active' : ''}>Rooms</Link>
+        <Link to="/about" className={path === '/about' ? 'active' : ''}>About</Link>
+        <Link to="/contact" className={path === '/contact' ? 'active' : ''}>Contact</Link>
+        <Link to="/faq" className={path === '/faq' ? 'active' : ''}>FAQ</Link>
       </NavLinks>
     </HeaderContainer>
   );

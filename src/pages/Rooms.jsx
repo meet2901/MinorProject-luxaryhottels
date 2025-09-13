@@ -28,30 +28,224 @@ const RoomsDescription = styled.p`
 const FiltersContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-bottom: 2rem;
-  padding: 1rem;
-  background-color: #f8f8f8;
-  border-radius: 8px;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #dee2e6;
+  position: relative;
+`;
+
+const ClearFiltersButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #ED6D05;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background: #d55a04;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 `;
 
 const FilterGroup = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 200px;
-  
+  min-width: 220px;
+  flex: 1;
+
   label {
-    font-size: 0.875rem;
-    margin-bottom: 0.5rem;
-    color: #555;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
-  
+
   select, input {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
     font-size: 1rem;
+    background: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    &:focus {
+      outline: none;
+      border-color: #ED6D05;
+      box-shadow: 0 0 0 3px rgba(237, 109, 5, 0.1);
+    }
+
+    &::placeholder {
+      color: #adb5bd;
+    }
   }
+
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+  }
+`;
+
+const SortContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #dee2e6;
+`;
+
+const SortGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-width: 250px;
+
+  label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  select {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+
+    &:focus {
+      outline: none;
+      border-color: #ED6D05;
+      box-shadow: 0 0 0 3px rgba(237, 109, 5, 0.1);
+    }
+  }
+`;
+
+const AmenitiesContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+`;
+
+const AmenityCheckbox = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #495057;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    border-color: #ED6D05;
+    background: #fff5f0;
+  }
+
+  input {
+    margin: 0;
+    accent-color: #ED6D05;
+  }
+
+  input:checked + & {
+    background: #ED6D05;
+    color: white;
+    border-color: #ED6D05;
+  }
+`;
+
+const PromotionsSection = styled.div`
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+  text-align: center;
+`;
+
+const PromotionsTitle = styled.h2`
+  margin-bottom: 1rem;
+  font-size: 2rem;
+`;
+
+const PromotionsDescription = styled.p`
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  opacity: 0.9;
+`;
+
+const OffersGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+`;
+
+const OfferCard = styled.div`
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+`;
+
+const OfferTitle = styled.h3`
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+`;
+
+const OfferDescription = styled.p`
+  margin-bottom: 1rem;
+  opacity: 0.9;
+`;
+
+const OfferDiscount = styled.div`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffd700;
 `;
 
 const RoomsGrid = styled.div`
@@ -72,39 +266,121 @@ const sampleRooms = [
   {
     id: 1,
     name: 'Deluxe King Room',
-    description: 'Spacious room with king-sized bed, work desk, and city view.',
+    type: 'Standard',
+    description: 'Spacious room with king-sized bed, work desk, and city view. Features modern furnishings, comfortable seating area, and en-suite bathroom with premium toiletries.',
     price: 199,
     capacity: 2,
-    amenities: ['wifi', 'breakfast', 'tv', 'ac'],
-    image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
+    size: '350 sq ft',
+    amenities: ['wifi', 'breakfast', 'tv', 'ac', 'safe', 'coffee-maker'],
+    image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    features: ['City View', 'Work Desk', 'Mini Fridge']
   },
   {
     id: 2,
     name: 'Executive Suite',
-    description: 'Luxury suite with separate living area, king bed, and premium amenities.',
+    type: 'Suite',
+    description: 'Luxury suite with separate living area, king bed, and premium amenities. Perfect for business travelers with executive lounge access and enhanced services.',
     price: 349,
     capacity: 2,
-    amenities: ['wifi', 'breakfast', 'minibar', 'spa', 'tv', 'ac'],
-    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
+    size: '650 sq ft',
+    amenities: ['wifi', 'breakfast', 'minibar', 'spa', 'tv', 'ac', 'safe', 'coffee-maker', 'executive-lounge'],
+    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    features: ['Separate Living Area', 'Executive Lounge Access', 'Premium Amenities']
   },
   {
     id: 3,
     name: 'Family Room',
-    description: 'Perfect for families with two queen beds and extra space for children.',
+    type: 'Standard',
+    description: 'Perfect for families with two queen beds and extra space for children. Includes kid-friendly amenities and connecting room options available.',
     price: 249,
     capacity: 4,
-    amenities: ['wifi', 'breakfast', 'tv', 'ac'],
-    image: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
+    size: '450 sq ft',
+    amenities: ['wifi', 'breakfast', 'tv', 'ac', 'safe', 'coffee-maker', 'connecting-room'],
+    image: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    features: ['Two Queen Beds', 'Kid-Friendly', 'Extra Space']
   },
   {
     id: 4,
     name: 'Presidential Suite',
-    description: 'Our most luxurious accommodation with panoramic views and butler service.',
+    type: 'Suite',
+    description: 'Our most luxurious accommodation with panoramic views and butler service. Features private dining area, spa bathroom, and personalized concierge service.',
     price: 599,
     capacity: 2,
-    amenities: ['wifi', 'breakfast', 'minibar', 'spa', 'tv', 'ac', 'butler'],
-    image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
+    size: '1200 sq ft',
+    amenities: ['wifi', 'breakfast', 'minibar', 'spa', 'tv', 'ac', 'butler', 'private-dining', 'concierge'],
+    image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    features: ['Panoramic Views', 'Butler Service', 'Private Dining']
   },
+  {
+    id: 5,
+    name: 'Standard Queen Room',
+    type: 'Standard',
+    description: 'Comfortable room with queen-sized bed, perfect for solo travelers or couples. Features modern decor and all essential amenities for a pleasant stay.',
+    price: 149,
+    capacity: 2,
+    size: '280 sq ft',
+    amenities: ['wifi', 'breakfast', 'tv', 'ac', 'safe'],
+    image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    features: ['Queen Bed', 'Modern Decor', 'Essential Amenities']
+  },
+  {
+    id: 6,
+    name: 'Junior Suite',
+    type: 'Suite',
+    description: 'Elegant suite with sitting area and queen bed. Ideal for extended stays with kitchenette and additional storage space.',
+    price: 279,
+    capacity: 2,
+    size: '500 sq ft',
+    amenities: ['wifi', 'breakfast', 'minibar', 'tv', 'ac', 'safe', 'kitchenette'],
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    features: ['Sitting Area', 'Kitchenette', 'Extended Stay Friendly']
+  },
+  {
+    id: 7,
+    name: 'Accessible Room',
+    type: 'Standard',
+    description: 'Fully accessible room designed for guests with disabilities. Features wide doorways, accessible bathroom, and mobility aids available.',
+    price: 189,
+    capacity: 2,
+    size: '320 sq ft',
+    amenities: ['wifi', 'breakfast', 'tv', 'ac', 'accessible', 'mobility-aids'],
+    image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    features: ['Accessible Design', 'Wide Doorways', 'Mobility Aids']
+  },
+  {
+    id: 8,
+    name: 'Penthouse Suite',
+    type: 'Suite',
+    description: 'Exclusive penthouse with stunning city views, private terrace, and luxury amenities. Includes personal chef service and exclusive rooftop access.',
+    price: 899,
+    capacity: 4,
+    size: '2000 sq ft',
+    amenities: ['wifi', 'breakfast', 'minibar', 'spa', 'tv', 'ac', 'butler', 'private-chef', 'rooftop-access', 'terrace'],
+    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    features: ['Private Terrace', 'Personal Chef', 'Rooftop Access']
+  }
+];
+
+// Special offers data
+const specialOffers = [
+  {
+    id: 1,
+    title: 'Early Bird Discount',
+    description: 'Book 30 days in advance and save 15% on your stay',
+    discount: '15% OFF'
+  },
+  {
+    id: 2,
+    title: 'Weekend Getaway',
+    description: 'Special rates for Friday and Saturday nights',
+    discount: '20% OFF'
+  },
+  {
+    id: 3,
+    title: 'Family Package',
+    description: 'Free breakfast for children under 12 when booking family rooms',
+    discount: 'FREE BREAKFAST'
+  }
 ];
 
 function Rooms() {
@@ -112,7 +388,11 @@ function Rooms() {
     capacity: '',
     minPrice: '',
     maxPrice: '',
+    type: '',
+    amenities: [],
   });
+
+  const [sortBy, setSortBy] = useState('price-low');
   
   // Apply filters to rooms
   const filteredRooms = sampleRooms.filter(room => {
@@ -125,7 +405,31 @@ function Rooms() {
     if (filters.maxPrice && room.price > parseInt(filters.maxPrice)) {
       return false;
     }
+    if (filters.type && room.type !== filters.type) {
+      return false;
+    }
+    if (filters.amenities.length > 0 && !filters.amenities.every(amenity => room.amenities.includes(amenity))) {
+      return false;
+    }
     return true;
+  });
+
+  // Sort rooms
+  const sortedRooms = [...filteredRooms].sort((a, b) => {
+    switch (sortBy) {
+      case 'price-low':
+        return a.price - b.price;
+      case 'price-high':
+        return b.price - a.price;
+      case 'capacity-low':
+        return a.capacity - b.capacity;
+      case 'capacity-high':
+        return b.capacity - a.capacity;
+      case 'name':
+        return a.name.localeCompare(b.name);
+      default:
+        return 0;
+    }
   });
   
   const handleFilterChange = (e) => {
@@ -134,6 +438,30 @@ function Rooms() {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleAmenityChange = (amenity) => {
+    setFilters(prev => ({
+      ...prev,
+      amenities: prev.amenities.includes(amenity)
+        ? prev.amenities.filter(a => a !== amenity)
+        : [...prev.amenities, amenity]
+    }));
+  };
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+  };
+
+  const clearFilters = () => {
+    setFilters({
+      capacity: '',
+      minPrice: '',
+      maxPrice: '',
+      type: '',
+      amenities: [],
+    });
+    setSortBy('price-low');
   };
   
   return (
@@ -146,12 +474,13 @@ function Rooms() {
       </RoomsHeader>
       
       <FiltersContainer data-aos="fade-up" data-aos-delay="200">
+        <ClearFiltersButton onClick={clearFilters}>🗑️ Clear Filters</ClearFiltersButton>
         <FilterGroup>
-          <label htmlFor="capacity">Guests</label>
-          <select 
-            id="capacity" 
-            name="capacity" 
-            value={filters.capacity} 
+          <label htmlFor="capacity">👥 Guests</label>
+          <select
+            id="capacity"
+            name="capacity"
+            value={filters.capacity}
             onChange={handleFilterChange}
           >
             <option value="">Any</option>
@@ -161,35 +490,105 @@ function Rooms() {
             <option value="4">4+</option>
           </select>
         </FilterGroup>
-        
+
         <FilterGroup>
-          <label htmlFor="minPrice">Min Price</label>
-          <input 
-            type="number" 
-            id="minPrice" 
-            name="minPrice" 
-            value={filters.minPrice} 
+          <label htmlFor="type">🏨 Room Type</label>
+          <select
+            id="type"
+            name="type"
+            value={filters.type}
+            onChange={handleFilterChange}
+          >
+            <option value="">All Types</option>
+            <option value="Standard">Standard</option>
+            <option value="Suite">Suite</option>
+          </select>
+        </FilterGroup>
+
+        <FilterGroup>
+          <label htmlFor="minPrice">💰 Min Price</label>
+          <input
+            type="number"
+            id="minPrice"
+            name="minPrice"
+            value={filters.minPrice}
             onChange={handleFilterChange}
             placeholder="Min $"
           />
         </FilterGroup>
-        
+
         <FilterGroup>
-          <label htmlFor="maxPrice">Max Price</label>
-          <input 
-            type="number" 
-            id="maxPrice" 
-            name="maxPrice" 
-            value={filters.maxPrice} 
+          <label htmlFor="maxPrice">💰 Max Price</label>
+          <input
+            type="number"
+            id="maxPrice"
+            name="maxPrice"
+            value={filters.maxPrice}
             onChange={handleFilterChange}
             placeholder="Max $"
           />
         </FilterGroup>
+
+        <FilterGroup>
+          <label>✨ Amenities</label>
+          <AmenitiesContainer>
+            {[
+              { key: 'wifi', label: 'WiFi', icon: '📶' },
+              { key: 'breakfast', label: 'Breakfast', icon: '🥐' },
+              { key: 'tv', label: 'TV', icon: '📺' },
+              { key: 'ac', label: 'AC', icon: '❄️' },
+              { key: 'minibar', label: 'Minibar', icon: '🍾' },
+              { key: 'spa', label: 'Spa', icon: '🧖' }
+            ].map(amenity => (
+              <AmenityCheckbox key={amenity.key}>
+                <input
+                  type="checkbox"
+                  checked={filters.amenities.includes(amenity.key)}
+                  onChange={() => handleAmenityChange(amenity.key)}
+                />
+                {amenity.icon} {amenity.label}
+              </AmenityCheckbox>
+            ))}
+          </AmenitiesContainer>
+        </FilterGroup>
       </FiltersContainer>
-      
-      {filteredRooms.length > 0 ? (
+
+      <SortContainer data-aos="fade-up" data-aos-delay="250">
+        <SortGroup>
+          <label htmlFor="sort">🔄 Sort By</label>
+          <select
+            id="sort"
+            value={sortBy}
+            onChange={handleSortChange}
+          >
+            <option value="price-low">💰 Price: Low to High</option>
+            <option value="price-high">💰 Price: High to Low</option>
+            <option value="capacity-low">👥 Capacity: Low to High</option>
+            <option value="capacity-high">👥 Capacity: High to Low</option>
+            <option value="name">📝 Name: A to Z</option>
+          </select>
+        </SortGroup>
+      </SortContainer>
+
+      <PromotionsSection data-aos="fade-up" data-aos-delay="300">
+        <PromotionsTitle>Special Offers</PromotionsTitle>
+        <PromotionsDescription>
+          Take advantage of our current promotions and save on your stay
+        </PromotionsDescription>
+        <OffersGrid>
+          {specialOffers.map((offer, index) => (
+            <OfferCard key={offer.id} data-aos="zoom-in" data-aos-delay={350 + (index * 100)}>
+              <OfferTitle>{offer.title}</OfferTitle>
+              <OfferDescription>{offer.description}</OfferDescription>
+              <OfferDiscount>{offer.discount}</OfferDiscount>
+            </OfferCard>
+          ))}
+        </OffersGrid>
+      </PromotionsSection>
+
+      {sortedRooms.length > 0 ? (
         <RoomsGrid>
-          {filteredRooms.map((room, index) => (
+          {sortedRooms.map((room, index) => (
             <div key={room.id} data-aos="fade-up" data-aos-delay={100 * (index + 1)}>
               <RoomCard room={room} />
             </div>
