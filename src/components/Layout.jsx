@@ -10,6 +10,7 @@ const LayoutContainer = styled.div`
 
 const Main = styled.main`
   flex: 1;
+  padding-top: 80px; /* Add padding to ensure content starts below the fixed navbar */
   padding-bottom: 2rem; /* Add padding to ensure space between content and footer */
 `;
 

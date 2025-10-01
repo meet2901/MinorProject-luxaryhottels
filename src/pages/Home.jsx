@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import Button from '../components/Button';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = styled.section`
-  height: 80vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
+  min-height: 85vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -12,124 +13,205 @@ const HeroSection = styled.section`
   align-items: center;
   color: white;
   text-align: center;
-  padding: 0 1rem;
+  padding: var(--space-4xl) var(--space-md);
+  position: relative;
+
+  @media (max-width: 768px) {
+    min-height: 70vh;
+    padding: var(--space-3xl) var(--space-md);
+  }
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 3.5rem;
+  margin-bottom: var(--space-lg);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  
+  line-height: 1.1;
+  max-width: 800px;
+
   @media (max-width: 768px) {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-md);
+  }
+
+  @media (max-width: 480px) {
     font-size: 2rem;
   }
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.25rem;
-  margin-bottom: 2rem;
-  max-width: 600px;
+  font-size: 1.375rem;
+  margin-bottom: var(--space-2xl);
+  max-width: 700px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  line-height: 1.5;
+
+  @media (max-width: 768px) {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-xl);
+  }
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
-  gap: 1rem;
-  
+  gap: var(--space-lg);
+  align-items: center;
+
   @media (max-width: 768px) {
     flex-direction: column;
+    gap: var(--space-md);
+    width: 100%;
+    max-width: 300px;
   }
 `;
 
-const SectionContainer = styled.section` 
-  data-aos="fade-up"
-  data-aos-duration="1000"
-  padding: 4rem 2rem;
-  max-width: 1200px;
+const SectionContainer = styled.section`
+  padding: var(--space-4xl) var(--space-md);
+  max-width: var(--container-xl);
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    padding: var(--space-3xl) var(--space-md);
+  }
 `;
 
 const SectionTitle = styled.h2`
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-2xl);
   color: #333;
   position: relative;
-  
+  font-size: 2.25rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.875rem;
+    margin-bottom: var(--space-xl);
+  }
+
   &:after {
     content: '';
     display: block;
-    width: 50px;
-    height: 3px;
+    width: 60px;
+    height: 4px;
     background-color: #ED6D05;
-    margin: 0.5rem auto 0;
+    margin: var(--space-md) auto 0;
+    border-radius: 2px;
   }
 `;
 
 const FeaturesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-2xl);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
 `;
 
 const FeatureCard = styled.div`
   background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: var(--space-2xl);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(237, 109, 5, 0.05);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(237, 109, 5, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    padding: var(--space-xl);
+  }
 
   h3 {
-    margin: 1rem 0;
+    margin: var(--space-lg) 0 var(--space-md) 0;
     color: #333;
+    font-size: 1.25rem;
   }
 
   p {
     color: #666;
     line-height: 1.6;
+    margin: 0;
   }
 
   .icon {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: #16a085;
+    margin-bottom: var(--space-md);
+    display: block;
   }
 `;
 
 const TestimonialCard = styled.div`
   background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: var(--space-2xl);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
   position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(237, 109, 5, 0.05);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(237, 109, 5, 0.12);
+  }
+
+  @media (max-width: 768px) {
+    padding: var(--space-xl);
+  }
 
   &:before {
     content: '"';
-    font-size: 3rem;
+    font-size: 4rem;
     color: #ED6D05;
     position: absolute;
-    top: 1rem;
-    left: 1rem;
+    top: var(--space-lg);
+    left: var(--space-lg);
+    font-family: serif;
+    opacity: 0.3;
   }
 
   p {
     color: #666;
-    line-height: 1.6;
+    line-height: 1.7;
     font-style: italic;
-    margin: 1rem 0;
+    margin: var(--space-lg) 0 var(--space-xl) 0;
+    font-size: 1.1rem;
+    position: relative;
+    z-index: 1;
   }
 
   .name {
-    font-weight: bold;
+    font-weight: 600;
     color: #333;
+    font-size: 1.125rem;
+    margin-bottom: var(--space-sm);
   }
 
   .rating {
     color: #FFD700;
-    margin-top: 0.5rem;
+    font-size: 1.25rem;
+    letter-spacing: 2px;
   }
 `;
 
 function Home() {
+  const navigate = useNavigate();
+
+  const handleBookRoom = () => {
+    navigate('/booking');
+  };
+
+  const handleExploreRooms = () => {
+    navigate('/rooms');
+  };
+
   return (
     <>
       <HeroSection>
@@ -138,8 +220,8 @@ function Home() {
           Book your stay and enjoy Luxury redefined at the most affordable rates.
         </HeroSubtitle>
         <ButtonGroup data-aos="fade-up" data-aos-delay="400">
-          <Button size="large">Book a Room</Button>
-          <Button size="large" variant="outline">Explore Rooms</Button>
+          <Button size="large" onClick={handleBookRoom}>Book a Room</Button>
+          <Button size="large" variant="outline" onClick={handleExploreRooms}>Explore Rooms</Button>
         </ButtonGroup>
       </HeroSection>
       

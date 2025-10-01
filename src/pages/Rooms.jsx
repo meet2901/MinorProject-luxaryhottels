@@ -3,50 +3,75 @@ import styled from 'styled-components';
 import RoomCard from '../components/RoomCard';
 
 const RoomsContainer = styled.div`
-  max-width: 1200px;
+  max-width: var(--container-xl);
   margin: 0 auto;
-  padding: 2rem;
+  padding: var(--space-2xl) var(--space-md);
+
+  @media (max-width: 768px) {
+    padding: var(--space-xl) var(--space-md);
+  }
 `;
 
 const RoomsHeader = styled.div`
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-3xl);
   text-align: center;
+
+  @media (max-width: 768px) {
+    margin-bottom: var(--space-2xl);
+  }
 `;
 
 const RoomsTitle = styled.h1`
   color: #333;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-lg);
+  font-size: 2.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    margin-bottom: var(--space-md);
+  }
 `;
 
 const RoomsDescription = styled.p`
   color: #666;
-  max-width: 700px;
+  max-width: 750px;
   margin: 0 auto;
-  line-height: 1.6;
+  line-height: 1.7;
+  font-size: 1.125rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const FiltersContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-  padding: 2rem;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+  padding: var(--space-2xl);
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid #dee2e6;
   position: relative;
+
+  @media (max-width: 768px) {
+    padding: var(--space-xl);
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
 `;
 
 const ClearFiltersButton = styled.button`
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: var(--space-lg);
+  right: var(--space-lg);
   background: #ED6D05;
   color: white;
   border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  padding: var(--space-sm) var(--space-md);
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
@@ -62,26 +87,36 @@ const ClearFiltersButton = styled.button`
   &:active {
     transform: translateY(0);
   }
+
+  @media (max-width: 768px) {
+    position: static;
+    align-self: flex-end;
+    margin-top: var(--space-md);
+  }
 `;
 
 const FilterGroup = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 220px;
+  min-width: 240px;
   flex: 1;
 
+  @media (max-width: 768px) {
+    min-width: 100%;
+  }
+
   label {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 600;
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--space-sm);
     color: #495057;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-xs);
   }
 
   select, input {
-    padding: 0.75rem 1rem;
+    padding: var(--space-md) var(--space-lg);
     border: 2px solid #e9ecef;
     border-radius: 8px;
     font-size: 1rem;
@@ -103,41 +138,51 @@ const FilterGroup = styled.div`
   select {
     cursor: pointer;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-    background-position: right 0.75rem center;
+    background-position: right var(--space-md) center;
     background-repeat: no-repeat;
     background-size: 1rem;
-    padding-right: 2.5rem;
+    padding-right: var(--space-2xl);
   }
 `;
 
 const SortContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 2rem;
-  padding: 1.5rem;
+  margin-bottom: var(--space-2xl);
+  padding: var(--space-xl);
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid #dee2e6;
+
+  @media (max-width: 768px) {
+    justify-content: stretch;
+    margin-bottom: var(--space-xl);
+    padding: var(--space-lg);
+  }
 `;
 
 const SortGroup = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 250px;
+  min-width: 280px;
+
+  @media (max-width: 768px) {
+    min-width: 100%;
+  }
 
   label {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 600;
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--space-sm);
     color: #495057;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-xs);
   }
 
   select {
-    padding: 0.75rem 1rem;
+    padding: var(--space-md) var(--space-lg);
     border: 2px solid #e9ecef;
     border-radius: 8px;
     font-size: 1rem;
@@ -146,10 +191,10 @@ const SortGroup = styled.div`
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     cursor: pointer;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-    background-position: right 0.75rem center;
+    background-position: right var(--space-md) center;
     background-repeat: no-repeat;
     background-size: 1rem;
-    padding-right: 2.5rem;
+    padding-right: var(--space-2xl);
 
     &:focus {
       outline: none;
@@ -199,66 +244,117 @@ const AmenityCheckbox = styled.label`
 `;
 
 const PromotionsSection = styled.div`
-  margin-bottom: 3rem;
-  padding: 2rem;
+  margin-bottom: var(--space-3xl);
+  padding: var(--space-2xl);
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 12px;
+  border-radius: 16px;
   color: white;
   text-align: center;
+
+  @media (max-width: 768px) {
+    margin-bottom: var(--space-2xl);
+    padding: var(--space-xl);
+  }
 `;
 
 const PromotionsTitle = styled.h2`
-  margin-bottom: 1rem;
-  font-size: 2rem;
+  margin-bottom: var(--space-lg);
+  font-size: 2.25rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.875rem;
+    margin-bottom: var(--space-md);
+  }
 `;
 
 const PromotionsDescription = styled.p`
-  margin-bottom: 2rem;
-  font-size: 1.1rem;
+  margin-bottom: var(--space-2xl);
+  font-size: 1.125rem;
   opacity: 0.9;
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    margin-bottom: var(--space-xl);
+    font-size: 1rem;
+  }
 `;
 
 const OffersGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-xl);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
 `;
 
 const OfferCard = styled.div`
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  border-radius: 8px;
-  padding: 1.5rem;
+  border-radius: 12px;
+  padding: var(--space-xl);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    padding: var(--space-lg);
+  }
 `;
 
 const OfferTitle = styled.h3`
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
+  margin-bottom: var(--space-sm);
+  font-size: 1.375rem;
 `;
 
 const OfferDescription = styled.p`
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-lg);
   opacity: 0.9;
+  line-height: 1.5;
 `;
 
 const OfferDiscount = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: bold;
   color: #ffd700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 `;
 
 const RoomsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: var(--space-2xl);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
 `;
 
 const NoRoomsMessage = styled.div`
   text-align: center;
-  padding: 3rem;
+  padding: var(--space-4xl) var(--space-xl);
   color: #666;
-  font-size: 1.25rem;
+  font-size: 1.375rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: var(--space-3xl) var(--space-lg);
+    font-size: 1.125rem;
+  }
 `;
 
 // Sample room data (in a real app, this would come from an API)

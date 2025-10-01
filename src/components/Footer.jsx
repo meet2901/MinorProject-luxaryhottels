@@ -1,4 +1,7 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube, FaLinkedinIn } from 'react-icons/fa';
 
 const FooterContainer = styled.footer`
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
@@ -201,7 +204,7 @@ const FooterSection = styled.div`
         transform: translateX(5px);
       }
       
-      a {
+      a, .footer-link {
         color: rgba(255, 255, 255, 0.8);
         text-decoration: none;
         transition: all 0.3s ease;
@@ -209,6 +212,7 @@ const FooterSection = styled.div`
         display: inline-block;
         position: relative;
         padding-left: 0;
+        cursor: pointer;
         
         &::before {
           content: '→';
@@ -391,20 +395,20 @@ function Footer() {
         <FooterTop>
           <Logo>Stay<span>Easy</span></Logo>
           <SocialIcons>
-            <a href="https://facebook.com" aria-label="Facebook">
-              <i className="fab fa-facebook-f"></i>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <FaFacebookF />
             </a>
-            <a href="https://twitter.com" aria-label="Twitter">
-              <i className="fab fa-twitter"></i>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+              <FaTwitter />
             </a>
-            <a href="https://instagram.com" aria-label="Instagram">
-              <i className="fab fa-instagram"></i>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <FaInstagram />
             </a>
-            <a href="https://youtube.com" aria-label="YouTube">
-              <i className="fab fa-youtube"></i>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <FaYoutube />
             </a>
-            <a href="https://linkedin.com" aria-label="LinkedIn">
-              <i className="fab fa-linkedin-in"></i>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <FaLinkedinIn />
             </a>
           </SocialIcons>
         </FooterTop>
@@ -413,22 +417,22 @@ function Footer() {
           <FooterSection>
             <h3>Explore</h3>
             <ul>
-              <li><a href="/home">Home</a></li>
-              <li><a href="/rooms">Rooms & Suites</a></li>
-              <li><a href="/special-offers">Special Offers</a></li>
-              <li><a href="/restaurants">Restaurants</a></li>
-              <li><a href="/spa">Spa & Wellness</a></li>
+              <li><Link to="/" className="footer-link">Home</Link></li>
+              <li><Link to="/rooms" className="footer-link">Rooms & Suites</Link></li>
+              <li><Link to="/bookings" className="footer-link">Bookings</Link></li>
+              <li><Link to="/dining" className="footer-link">Restaurants</Link></li>
+              <li><Link to="/spa" className="footer-link">Spa & Wellness</Link></li>
             </ul>
           </FooterSection>
           
           <FooterSection>
             <h3>Information</h3>
             <ul>
-              <li><a href="/about">About Us</a></li>
-              <li><a href="/contact">Contact Us</a></li>
-              <li><a href="/terms">Terms & Conditions</a></li>
-              <li><a href="/privacy">Privacy Policy</a></li>
-              <li><a href="/faq">FAQ</a></li>
+              <li><Link to="/about" className="footer-link">About Us</Link></li>
+              <li><Link to="/contact" className="footer-link">Contact Us</Link></li>
+              <li><Link to="/terms" className="footer-link">Terms & Conditions</Link></li>
+              <li><Link to="/privacy" className="footer-link">Privacy Policy</Link></li>
+              <li><Link to="/faq" className="footer-link">FAQ</Link></li>
             </ul>
           </FooterSection>
           
@@ -436,7 +440,10 @@ function Footer() {
             <h2>Get exclusive offers and updates for your next dream vacation</h2>
             <SubscribeForm>
               <input type="email" placeholder="Your email address" aria-label="Email address" />
-              <button type="submit">Subscribe</button>
+              <button type="submit" onClick={(e) => {
+                e.preventDefault();
+                alert('Thank you for subscribing to our newsletter!');
+              }}>Subscribe</button>
             </SubscribeForm>
           </NewsletterSection>
         </FooterColumns>

@@ -36,7 +36,7 @@ const ProductGrid = styled.div`
   gap: 2rem;
 `;
 
-const ProductCard = styled.div`
+const ProductItem = styled.div`
   background: white;
   padding: 1.5rem;
   border-radius: 8px;
@@ -62,24 +62,24 @@ const ProductCard = styled.div`
 
 const sampleProducts = [
   { id: 1, name: 'Hotel Branded T-Shirt', description: 'Comfortable cotton t-shirt with hotel logo.', price: '$25' },
-  { id: 2, name: 'Luxury Bath Set', description: 'Premium bath products for home use.', price: '$45' },
-  { id: 3, name: 'Gift Card', description: 'Perfect gift for any occasion.', price: '$50' },
-  { id: 4, name: 'Hotel Mug', description: 'Keep your coffee hot with our branded mug.', price: '$15' },
+  { id: 2, name: 'Luxury Bath Set', description: 'Premium toiletries and bath amenities.', price: '$45' },
+  { id: 3, name: 'Souvenir Mug', description: 'Ceramic mug with hotel design.', price: '$15' },
+  { id: 4, name: 'Gift Card', description: 'Perfect gift for any occasion.', price: '$50' },
 ];
 
 function Shop() {
   return (
     <PageContainer>
-      <Hero>Hotel Shop</Hero>
+      <Hero>E-commerce & Add-ons</Hero>
       <Section>
-        <SectionTitle>Featured Products</SectionTitle>
+        <SectionTitle>Hotel Shop</SectionTitle>
         <ProductGrid>
           {sampleProducts.map(product => (
-            <ProductCard key={product.id}>
+            <ProductItem key={product.id}>
               <h3>{product.name}</h3>
               <p>{product.description}</p>
               <div className="price">{product.price}</div>
-            </ProductCard>
+            </ProductItem>
           ))}
         </ProductGrid>
       </Section>
