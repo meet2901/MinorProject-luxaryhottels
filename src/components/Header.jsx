@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { FaShoppingCart, FaUser, FaBars, FaTimes, FaSignOutAlt, FaEdit, FaTrash, FaUpload } from "react-icons/fa";
+import { FaShoppingCart, FaUser, FaBars, FaTimes, FaSignOutAlt, FaEdit, FaTrash, FaUpload, FaSignInAlt } from "react-icons/fa";
+import { useAuth } from '../context/AuthContext';
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(-10px); }
@@ -137,7 +138,7 @@ const NavItem = styled.li`
 `;
 
 const Dropdown = styled.ul`
-  display: ${(props) => (props.isOpen ? "block" : "none")};
+  display: ${(props) => (props.$isOpen ? "block" : "none")};
   position: absolute;
   background: rgba(20, 20, 20, 0.95);
   top: 100%;
@@ -157,26 +158,26 @@ const Dropdown = styled.ul`
     transition: all 0.3s ease;
     animation: ${slideIn} 0.3s ease-out;
     animation-fill-mode: both;
-    
+
     &:nth-child(1) { animation-delay: 0.05s; }
     &:nth-child(2) { animation-delay: 0.1s; }
     &:nth-child(3) { animation-delay: 0.15s; }
-    
+
     &:last-child {
       border-bottom: none;
     }
-    
+
     &:hover {
       color: #ff9800;
       transform: translateX(5px);
     }
-    
+
     a {
       color: white;
       text-decoration: none;
       display: block;
       transition: all 0.3s ease;
-      
+
       &:hover {
         color: #ff9800;
       }
@@ -226,18 +227,18 @@ const UserMenu = styled.div`
   position: relative;
   cursor: pointer;
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: scale(1.1);
     color: #ff9800;
   }
-  
+
   &:active {
     transform: scale(0.95);
   }
 
   .dropdown {
-    display: ${(props) => (props.isOpen ? "block" : "none")};
+    display: ${(props) => (props.$isOpen ? "block" : "none")};
     position: absolute;
     right: 0;
     top: 120%;
@@ -260,21 +261,21 @@ const UserMenu = styled.div`
       gap: 0.5rem;
       animation: ${slideIn} 0.3s ease-out;
       animation-fill-mode: both;
-      
+
       &:nth-child(1) { animation-delay: 0.05s; }
       &:nth-child(2) { animation-delay: 0.1s; }
       &:nth-child(3) { animation-delay: 0.15s; }
       &:nth-child(4) { animation-delay: 0.2s; }
-      
+
       &:last-child {
         border-bottom: none;
       }
-      
+
       &:hover {
         color: #ff9800;
         transform: translateX(5px);
       }
-      
+
       a {
         color: white;
         text-decoration: none;
@@ -283,13 +284,13 @@ const UserMenu = styled.div`
         gap: 0.5rem;
         width: 100%;
         transition: all 0.3s ease;
-        
+
         &:hover {
           color: #ff9800;
         }
       }
     }
-    
+
     .user-profile {
       display: flex;
       align-items: center;
@@ -297,30 +298,30 @@ const UserMenu = styled.div`
       padding-bottom: 0.8rem;
       margin-bottom: 0.8rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      
+
       .avatar {
         width: 40px;
         height: 40px;
         border-radius: 50%;
         overflow: hidden;
         border: 2px solid #ff9800;
-        
+
         img {
           width: 100%;
           height: 100%;
           object-fit: cover;
         }
       }
-      
+
       .user-info {
         display: flex;
         flex-direction: column;
-        
+
         .name {
           font-weight: bold;
           font-size: 0.9rem;
         }
-        
+
         .email {
           font-size: 0.75rem;
           opacity: 0.7;
@@ -356,7 +357,7 @@ const slideInRight = keyframes`
 `;
 
 const MobileNavPanel = styled.div`
-  display: ${(props) => (props.isOpen ? "flex" : "none")};
+  display: ${(props) => (props.$isOpen ? "flex" : "none")};
   flex-direction: column;
   position: fixed;
   top: 0;
@@ -377,13 +378,13 @@ const MobileNavPanel = styled.div`
     font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    
+
     &:hover {
       color: #ff9800;
       transform: scale(1.1);
     }
   }
-  
+
   .mobile-user-section {
     display: flex;
     align-items: center;
@@ -391,30 +392,30 @@ const MobileNavPanel = styled.div`
     padding: 1rem 0 2rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 1rem;
-    
+
     .avatar {
       width: 50px;
       height: 50px;
       border-radius: 50%;
       overflow: hidden;
       border: 2px solid #ff9800;
-      
+
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
     }
-    
+
     .user-info {
       display: flex;
       flex-direction: column;
-      
+
       .name {
         font-weight: bold;
         font-size: 1rem;
       }
-      
+
       .email {
         font-size: 0.8rem;
         opacity: 0.7;
@@ -434,7 +435,7 @@ const MobileNavPanel = styled.div`
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     animation: ${slideIn} 0.3s ease-out;
     animation-fill-mode: both;
-    
+
     &:nth-child(1) { animation-delay: 0.1s; }
     &:nth-child(2) { animation-delay: 0.15s; }
     &:nth-child(3) { animation-delay: 0.2s; }
@@ -446,13 +447,13 @@ const MobileNavPanel = styled.div`
     &:nth-child(9) { animation-delay: 0.5s; }
     &:nth-child(10) { animation-delay: 0.55s; }
     &:nth-child(11) { animation-delay: 0.6s; }
-    
+
     &:hover {
       color: #ff9800;
       transform: translateX(5px);
     }
   }
-  
+
   .mobile-cart {
     display: flex;
     align-items: center;
@@ -460,7 +461,7 @@ const MobileNavPanel = styled.div`
     margin-top: 1rem;
     padding: 0.8rem 0;
     position: relative;
-    
+
     .badge {
       position: absolute;
       top: 0;
@@ -476,14 +477,157 @@ const MobileNavPanel = styled.div`
   }
 `;
 
+const LoginModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: ${fadeIn} 0.3s ease-out;
+  padding: 1rem;
+  box-sizing: border-box;
+`;
+
+const LoginForm = styled.div`
+  background: white;
+  padding: 2.5rem;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  animation: ${slideIn} 0.3s ease-out;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  @media (max-width: 480px) {
+    padding: 2rem;
+    margin: 0.5rem;
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  
+  &:hover {
+    color: #ff9800;
+  }
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+const Label = styled.label`
+  display: block;
+  margin-bottom: 0.7rem;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.95rem;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  
+  &:focus {
+    outline: none;
+    border-color: #ff9800;
+    box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
+    transform: translateY(-1px);
+  }
+  
+  &::placeholder {
+    color: #999;
+  }
+`;
+
+const Button = styled.button`
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(45deg, #ff9800, #ff5722);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+`;
+
+const ErrorMessage = styled.div`
+  color: #ff5722;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+`;
+
+const ToggleAuth = styled.div`
+  text-align: center;
+  margin-top: 1rem;
+  color: #666;
+  
+  span {
+    color: #ff9800;
+    cursor: pointer;
+    text-decoration: underline;
+    
+    &:hover {
+      color: #ff5722;
+    }
+  }
+`;
+
 const Header = () => {
   const navigate = useNavigate();
+  const { user, login, signup, logout, loading, error, setError } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
 
-  const user = JSON.parse(localStorage.getItem("user"));
   const isAuthenticated = !!user;
   
   // Get cart items from localStorage
@@ -504,9 +648,16 @@ const Header = () => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setUserDropdownOpen(false);
+      setMobileMenuOpen(false);
+      // Navigate to home page after logout
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
   
   const handleEditProfile = () => {
@@ -523,6 +674,50 @@ const Header = () => {
   
   const handleImageUpload = () => {
     navigate("/profile/upload-image");
+  };
+
+  const handleLoginClick = () => {
+    setShowLoginModal(true);
+    setIsLogin(true);
+    setError(null);
+    setFormData({ name: '', email: '', password: '', confirmPassword: '' });
+  };
+
+  const handleSignupClick = () => {
+    setShowLoginModal(true);
+    setIsLogin(false);
+    setError(null);
+    setFormData({ name: '', email: '', password: '', confirmPassword: '' });
+  };
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    
+    try {
+      if (isLogin) {
+        await login(formData.email, formData.password);
+      } else {
+        await signup(formData.name, formData.email, formData.password, formData.confirmPassword);
+      }
+      setShowLoginModal(false);
+      setFormData({ name: '', email: '', password: '', confirmPassword: '' });
+    } catch (err) {
+      // Error is handled by the AuthContext
+    }
+  };
+
+  const closeLoginModal = () => {
+    setShowLoginModal(false);
+    setError(null);
+    setFormData({ name: '', email: '', password: '', confirmPassword: '' });
   };
 
   const toggleMenu = (menu) => {
@@ -550,7 +745,7 @@ const Header = () => {
             aria-expanded={openMenu === "amenities"}
           >
             Amenities
-            <Dropdown isOpen={openMenu === "amenities"}>
+            <Dropdown $isOpen={openMenu === "amenities"}>
               <li>
                 <Link to="/rooms"><FaShoppingCart size={14} style={{opacity: 0.7}} /> Rooms & Suites</Link>
               </li>
@@ -570,7 +765,7 @@ const Header = () => {
             aria-expanded={openMenu === "services"}
           >
             Services
-            <Dropdown isOpen={openMenu === "services"}>
+            <Dropdown $isOpen={openMenu === "services"}>
               <li>
                 <Link to="/events"><FaShoppingCart size={14} style={{opacity: 0.7}} /> Events</Link>
               </li>
@@ -579,6 +774,9 @@ const Header = () => {
               </li>
               <li>
                 <Link to="/gallery"><FaShoppingCart size={14} style={{opacity: 0.7}} /> Gallery</Link>
+              </li>
+              <li>
+                <Link to="/books"><FaShoppingCart size={14} style={{opacity: 0.7}} /> Library</Link>
               </li>
             </Dropdown>
           </NavItem>
@@ -590,7 +788,7 @@ const Header = () => {
             aria-expanded={openMenu === "support"}
           >
             Support
-            <Dropdown isOpen={openMenu === "support"}>
+            <Dropdown $isOpen={openMenu === "support"}>
               <li>
                 <Link to="/about"><FaShoppingCart size={14} style={{opacity: 0.7}} /> About</Link>
               </li>
@@ -608,6 +806,11 @@ const Header = () => {
               Shop
             </Link>
           </NavItem>
+          {isAuthenticated && user?.role === 'admin' && (
+            <NavItem>
+              <Link to="/dashboard">Admin Dashboard</Link>
+            </NavItem>
+          )}
         </NavLinks>
 
         <IconContainer>
@@ -624,7 +827,7 @@ const Header = () => {
                     {cartItems.slice(0, 2).map((item, index) => (
                       <li key={index} style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span>{item.name || 'Item'}</span>
-                        <span style={{ color: '#ff9800' }}>${item.price || '0'}</span>
+                        <span style={{ color: '#ff9800' }}>₹{item.price || '0'}</span>
                       </li>
                     ))}
                     {cartCount > 2 && (
@@ -649,7 +852,7 @@ const Header = () => {
 
           <UserMenu
             className="user-menu"
-            isOpen={userDropdownOpen}
+            $isOpen={userDropdownOpen}
             onClick={() => setUserDropdownOpen(!userDropdownOpen)}
           >
             <FaUser size={20} />
@@ -674,21 +877,17 @@ const Header = () => {
                   <li onClick={handleDeleteAccount}>
                     <FaTrash size={14} /> Delete Account
                   </li>
-                  <li onClick={handleLogout}>
+                  <li onClick={() => handleLogout()}>
                     <FaSignOutAlt size={14} /> Logout
                   </li>
                 </>
               ) : (
                 <>
-                  <li>
-                    <Link to="/login">
-                      <FaUser size={14} /> Login
-                    </Link>
+                  <li onClick={handleLoginClick}>
+                    <FaSignInAlt size={14} /> Login
                   </li>
-                  <li>
-                    <Link to="/signup">
-                      <FaUser size={14} /> Signup
-                    </Link>
+                  <li onClick={handleSignupClick}>
+                    <FaUser size={14} /> Signup
                   </li>
                 </>
               )}
@@ -702,7 +901,7 @@ const Header = () => {
       </Nav>
 
       {/* Mobile Nav */}
-      <MobileNavPanel isOpen={mobileMenuOpen}>
+      <MobileNavPanel $isOpen={mobileMenuOpen}>
         <div className="close-button" onClick={closeMobileMenu}>
           <FaTimes />
         </div>
@@ -740,9 +939,17 @@ const Header = () => {
         <Link to="/gallery" onClick={closeMobileMenu}>
           <FaShoppingCart size={16} style={{opacity: 0.7}} /> Gallery
         </Link>
+        <Link to="/books" onClick={closeMobileMenu}>
+          <FaShoppingCart size={16} style={{opacity: 0.7}} /> Library
+        </Link>
         <Link to="/shop" onClick={closeMobileMenu}>
           <FaShoppingCart size={16} style={{opacity: 0.7}} /> Shop
         </Link>
+        {isAuthenticated && user?.role === 'admin' && (
+          <Link to="/dashboard" onClick={closeMobileMenu}>
+            <FaShoppingCart size={16} style={{opacity: 0.7}} /> Admin Dashboard
+          </Link>
+        )}
         <Link to="/about" onClick={closeMobileMenu}>
           <FaShoppingCart size={16} style={{opacity: 0.7}} /> About
         </Link>
@@ -761,18 +968,18 @@ const Header = () => {
             <Link to="/profile/upload-image" onClick={closeMobileMenu}>
               <FaUpload size={16} /> Upload Image
             </Link>
-            <div onClick={handleLogout} style={{ color: 'white', padding: '0.8rem 0', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+            <div onClick={() => handleLogout()} style={{ color: 'white', padding: '0.8rem 0', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
               <FaSignOutAlt size={16} /> Logout
             </div>
           </>
         ) : (
           <>
-            <Link to="/login" onClick={closeMobileMenu}>
-              <FaUser size={16} /> Login
-            </Link>
-            <Link to="/signup" onClick={closeMobileMenu}>
+            <div onClick={() => { handleLoginClick(); closeMobileMenu(); }} style={{ color: 'white', padding: '0.8rem 0', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+              <FaSignInAlt size={16} /> Login
+            </div>
+            <div onClick={() => { handleSignupClick(); closeMobileMenu(); }} style={{ color: 'white', padding: '0.8rem 0', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
               <FaUser size={16} /> Signup
-            </Link>
+            </div>
           </>
         )}
         
@@ -783,6 +990,94 @@ const Header = () => {
           {cartCount > 0 && <div className="badge">{cartCount}</div>}
         </div>
       </MobileNavPanel>
+
+      {/* Login Modal */}
+      {showLoginModal && (
+        <LoginModal onClick={closeLoginModal}>
+          <LoginForm onClick={(e) => e.stopPropagation()}>
+            <CloseButton onClick={closeLoginModal}>×</CloseButton>
+            <h2 style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#333' }}>
+              {isLogin ? 'Login' : 'Sign Up'}
+            </h2>
+            
+            <form onSubmit={handleSubmit}>
+              {!isLogin && (
+                <FormGroup>
+                  <Label htmlFor="name">Full Name</Label>
+                  <Input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required={!isLogin}
+                    placeholder="Enter your full name"
+                  />
+                </FormGroup>
+              )}
+              
+              <FormGroup>
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Enter your email"
+                />
+              </FormGroup>
+              
+              <FormGroup>
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Enter your password"
+                />
+              </FormGroup>
+              
+              {!isLogin && (
+                <FormGroup>
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    required={!isLogin}
+                    placeholder="Confirm your password"
+                  />
+                </FormGroup>
+              )}
+              
+              {error && <ErrorMessage>{error}</ErrorMessage>}
+              
+              <Button type="submit" disabled={loading}>
+                {loading ? 'Please wait...' : (isLogin ? 'Login' : 'Sign Up')}
+              </Button>
+            </form>
+            
+            <ToggleAuth>
+              {isLogin ? (
+                <>
+                  Don't have an account? <span onClick={() => setIsLogin(false)}>Sign up</span>
+                </>
+              ) : (
+                <>
+                  Already have an account? <span onClick={() => setIsLogin(true)}>Login</span>
+                </>
+              )}
+            </ToggleAuth>
+          </LoginForm>
+        </LoginModal>
+      )}
     </HeaderWrapper>
   );
 };

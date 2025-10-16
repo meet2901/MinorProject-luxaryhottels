@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import RoomCard from '../components/RoomCard';
+import { getRooms, getSpecialOffers } from '../services/hotelService';
 
 const RoomsContainer = styled.div`
   max-width: var(--container-xl);
@@ -357,105 +358,6 @@ const NoRoomsMessage = styled.div`
   }
 `;
 
-// Sample room data (in a real app, this would come from an API)
-const sampleRooms = [
-  {
-    id: 1,
-    name: 'Deluxe King Room',
-    type: 'Standard',
-    description: 'Spacious room with king-sized bed, work desk, and city view. Features modern furnishings, comfortable seating area, and en-suite bathroom with premium toiletries.',
-    price: 199,
-    capacity: 2,
-    size: '350 sq ft',
-    amenities: ['wifi', 'breakfast', 'tv', 'ac', 'safe', 'coffee-maker'],
-    image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    features: ['City View', 'Work Desk', 'Mini Fridge']
-  },
-  {
-    id: 2,
-    name: 'Executive Suite',
-    type: 'Suite',
-    description: 'Luxury suite with separate living area, king bed, and premium amenities. Perfect for business travelers with executive lounge access and enhanced services.',
-    price: 349,
-    capacity: 2,
-    size: '650 sq ft',
-    amenities: ['wifi', 'breakfast', 'minibar', 'spa', 'tv', 'ac', 'safe', 'coffee-maker', 'executive-lounge'],
-    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    features: ['Separate Living Area', 'Executive Lounge Access', 'Premium Amenities']
-  },
-  {
-    id: 3,
-    name: 'Family Room',
-    type: 'Standard',
-    description: 'Perfect for families with two queen beds and extra space for children. Includes kid-friendly amenities and connecting room options available.',
-    price: 249,
-    capacity: 4,
-    size: '450 sq ft',
-    amenities: ['wifi', 'breakfast', 'tv', 'ac', 'safe', 'coffee-maker', 'connecting-room'],
-    image: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    features: ['Two Queen Beds', 'Kid-Friendly', 'Extra Space']
-  },
-  {
-    id: 4,
-    name: 'Presidential Suite',
-    type: 'Suite',
-    description: 'Our most luxurious accommodation with panoramic views and butler service. Features private dining area, spa bathroom, and personalized concierge service.',
-    price: 599,
-    capacity: 2,
-    size: '1200 sq ft',
-    amenities: ['wifi', 'breakfast', 'minibar', 'spa', 'tv', 'ac', 'butler', 'private-dining', 'concierge'],
-    image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    features: ['Panoramic Views', 'Butler Service', 'Private Dining']
-  },
-  {
-    id: 5,
-    name: 'Standard Queen Room',
-    type: 'Standard',
-    description: 'Comfortable room with queen-sized bed, perfect for solo travelers or couples. Features modern decor and all essential amenities for a pleasant stay.',
-    price: 149,
-    capacity: 2,
-    size: '280 sq ft',
-    amenities: ['wifi', 'breakfast', 'tv', 'ac', 'safe'],
-    image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    features: ['Queen Bed', 'Modern Decor', 'Essential Amenities']
-  },
-  {
-    id: 6,
-    name: 'Junior Suite',
-    type: 'Suite',
-    description: 'Elegant suite with sitting area and queen bed. Ideal for extended stays with kitchenette and additional storage space.',
-    price: 279,
-    capacity: 2,
-    size: '500 sq ft',
-    amenities: ['wifi', 'breakfast', 'minibar', 'tv', 'ac', 'safe', 'kitchenette'],
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    features: ['Sitting Area', 'Kitchenette', 'Extended Stay Friendly']
-  },
-  {
-    id: 7,
-    name: 'Accessible Room',
-    type: 'Standard',
-    description: 'Fully accessible room designed for guests with disabilities. Features wide doorways, accessible bathroom, and mobility aids available.',
-    price: 189,
-    capacity: 2,
-    size: '320 sq ft',
-    amenities: ['wifi', 'breakfast', 'tv', 'ac', 'accessible', 'mobility-aids'],
-    image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    features: ['Accessible Design', 'Wide Doorways', 'Mobility Aids']
-  },
-  {
-    id: 8,
-    name: 'Penthouse Suite',
-    type: 'Suite',
-    description: 'Exclusive penthouse with stunning city views, private terrace, and luxury amenities. Includes personal chef service and exclusive rooftop access.',
-    price: 899,
-    capacity: 4,
-    size: '2000 sq ft',
-    amenities: ['wifi', 'breakfast', 'minibar', 'spa', 'tv', 'ac', 'butler', 'private-chef', 'rooftop-access', 'terrace'],
-    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    features: ['Private Terrace', 'Personal Chef', 'Rooftop Access']
-  }
-];
 
 // Special offers data
 const specialOffers = [
@@ -480,6 +382,10 @@ const specialOffers = [
 ];
 
 function Rooms() {
+  const [rooms, setRooms] = useState([]);
+  const [specialOffers, setSpecialOffers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     capacity: '',
     minPrice: '',
@@ -489,9 +395,62 @@ function Rooms() {
   });
 
   const [sortBy, setSortBy] = useState('price-low');
-  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [roomsData, offersData] = await Promise.all([
+          getRooms(),
+          getSpecialOffers()
+        ]);
+        setRooms(roomsData);
+        setSpecialOffers(offersData);
+      } catch (err) {
+        setError('Failed to load rooms and offers. Please try again later.');
+        console.error('Error fetching data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <RoomsContainer>
+        <RoomsHeader>
+          <RoomsTitle data-aos="fade-up">Our Rooms & Suites</RoomsTitle>
+          <RoomsDescription data-aos="fade-up" data-aos-delay="100">
+            Choose from our selection of luxurious rooms and suites designed for your comfort and relaxation.
+          </RoomsDescription>
+        </RoomsHeader>
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+          Loading rooms...
+        </div>
+      </RoomsContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <RoomsContainer>
+        <RoomsHeader>
+          <RoomsTitle data-aos="fade-up">Our Rooms & Suites</RoomsTitle>
+          <RoomsDescription data-aos="fade-up" data-aos-delay="100">
+            Choose from our selection of luxurious rooms and suites designed for your comfort and relaxation.
+          </RoomsDescription>
+        </RoomsHeader>
+        <div style={{ textAlign: 'center', padding: '4rem', color: '#dc3545' }}>
+          {error}
+        </div>
+      </RoomsContainer>
+    );
+  }
+
   // Apply filters to rooms
-  const filteredRooms = sampleRooms.filter(room => {
+  const filteredRooms = rooms.filter(room => {
     if (filters.capacity && room.capacity < parseInt(filters.capacity)) {
       return false;
     }
@@ -609,7 +568,7 @@ function Rooms() {
             name="minPrice"
             value={filters.minPrice}
             onChange={handleFilterChange}
-            placeholder="Min $"
+            placeholder="Min ₹"
           />
         </FilterGroup>
 
@@ -621,7 +580,7 @@ function Rooms() {
             name="maxPrice"
             value={filters.maxPrice}
             onChange={handleFilterChange}
-            placeholder="Max $"
+            placeholder="Max ₹"
           />
         </FilterGroup>
 

@@ -53,13 +53,44 @@ export const CartProvider = ({ children }) => {
     return cartItems.length;
   };
 
+  // Coupon functionality
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+
+  const applyCoupon = (coupon) => {
+    setAppliedCoupon(coupon);
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+  };
+
+  const calculateDiscount = () => {
+    if (!appliedCoupon) return 0;
+
+    const subtotal = getCartTotal();
+    if (appliedCoupon.type === 'percentage') {
+      return (subtotal * appliedCoupon.discount) / 100;
+    } else {
+      return Math.min(appliedCoupon.discount, subtotal);
+    }
+  };
+
+  const getCartTotalWithDiscount = () => {
+    return getCartTotal() - calculateDiscount();
+  };
+
   const value = {
     cartItems,
     addToCart,
     removeFromCart,
     clearCart,
     getCartTotal,
-    getCartCount
+    getCartCount,
+    appliedCoupon,
+    applyCoupon,
+    removeCoupon,
+    calculateDiscount,
+    getCartTotalWithDiscount
   };
 
   return (

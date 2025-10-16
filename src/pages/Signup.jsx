@@ -23,7 +23,7 @@ const SignupCard = styled.div`
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   padding: var(--space-4xl);
   width: 100%;
-  max-width: 500px;
+  max-width: 750px;
   position: relative;
   overflow: hidden;
 

@@ -717,7 +717,7 @@ function BookingForm() {
                       <div className="room-name">{room.name}</div>
                       <div className="room-details">{room.description}</div>
                     </div>
-                    <div className="room-price">${room.price}/night</div>
+                    <div className="room-price">₹{room.price}/night</div>
                   </div>
                 ))}
               </RoomSelection>
@@ -750,13 +750,13 @@ function BookingForm() {
               {selectedRooms.map(room => (
                 <div key={room.id} className="summary-item">
                   <span>{room.name}</span>
-                  <span>${room.price}/night</span>
+                  <span>₹{room.price}/night</span>
                 </div>
               ))}
 
               <div className="summary-item total">
                 <span>Total</span>
-                <span>${total.toLocaleString()}</span>
+                <span>₹{total.toLocaleString()}</span>
               </div>
             </BookingSummary>
           </div>
@@ -784,7 +784,7 @@ function BookingForm() {
             disabled={loading || selectedRooms.length === 0}
             className={loading ? 'loading' : ''}
           >
-            {loading ? 'Processing...' : `Complete Booking - $${total.toLocaleString()}`}
+            {loading ? 'Processing...' : `Complete Booking - ₹${total.toLocaleString()}`}
           </Button>
         </ActionButtons>
       </BookingCard>

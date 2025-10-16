@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '../components/Button';
+import { getGalleryImages } from '../services/unsplashService';
 
 const GalleryContainer = styled.div`
   max-width: var(--container-xl);
@@ -394,71 +395,6 @@ const CTADescription = styled.p`
 // Sample data
 const galleryCategories = ['All', 'Rooms', 'Dining', 'Spa', 'Events', 'Facilities', 'Views'];
 
-const galleryImages = [
-  {
-    id: 1,
-    src: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'Rooms',
-    title: 'Luxury Suite',
-    description: 'Elegant suite with panoramic city views'
-  },
-  {
-    id: 2,
-    src: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'Dining',
-    title: 'Fine Dining',
-    description: 'Award-winning restaurant with exquisite cuisine'
-  },
-  {
-    id: 3,
-    src: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'Spa',
-    title: 'Spa Treatment',
-    description: 'Relaxing spa experience with professional therapists'
-  },
-  {
-    id: 4,
-    src: 'https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'Events',
-    title: 'Grand Ballroom',
-    description: 'Perfect venue for weddings and corporate events'
-  },
-  {
-    id: 5,
-    src: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'Facilities',
-    title: 'Infinity Pool',
-    description: 'Stunning rooftop pool with city skyline views'
-  },
-  {
-    id: 6,
-    src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'Views',
-    title: 'Ocean View',
-    description: 'Breathtaking sunset views from our premium rooms'
-  },
-  {
-    id: 7,
-    src: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'Rooms',
-    title: 'Presidential Suite',
-    description: 'Ultimate luxury with private terrace and jacuzzi'
-  },
-  {
-    id: 8,
-    src: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'Dining',
-    title: 'Terrace Dining',
-    description: 'Al fresco dining under the stars'
-  },
-  {
-    id: 9,
-    src: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    category: 'Spa',
-    title: 'Wellness Center',
-    description: 'State-of-the-art fitness and wellness facilities'
-  }
-];
 
 const videos = [
   {
@@ -488,9 +424,29 @@ const videos = [
 ];
 
 function Gallery() {
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        setLoading(true);
+        const data = await getGalleryImages();
+        setGalleryImages(data);
+      } catch (err) {
+        setError('Failed to load gallery images. Please try again later.');
+        console.error('Error fetching gallery images:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   const filteredImages = selectedCategory === 'All'
     ? galleryImages
@@ -507,6 +463,40 @@ function Gallery() {
     const prevIndex = currentIndex === 0 ? filteredImages.length - 1 : currentIndex - 1;
     setSelectedImage(filteredImages[prevIndex]);
   };
+
+  if (loading) {
+    return (
+      <GalleryContainer>
+        <GalleryHeader data-aos="fade-up">
+          <GalleryTitle>Photo & Video Gallery</GalleryTitle>
+          <GalleryDescription>
+            Explore our stunning photo and video gallery showcasing the luxury,
+            elegance, and exceptional experiences that await you at our hotel.
+          </GalleryDescription>
+        </GalleryHeader>
+        <div style={{ textAlign: 'center', padding: '4rem' }}>
+          <div>Loading gallery...</div>
+        </div>
+      </GalleryContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <GalleryContainer>
+        <GalleryHeader data-aos="fade-up">
+          <GalleryTitle>Photo & Video Gallery</GalleryTitle>
+          <GalleryDescription>
+            Explore our stunning photo and video gallery showcasing the luxury,
+            elegance, and exceptional experiences that await you at our hotel.
+          </GalleryDescription>
+        </GalleryHeader>
+        <div style={{ textAlign: 'center', padding: '4rem', color: '#dc3545' }}>
+          {error}
+        </div>
+      </GalleryContainer>
+    );
+  }
 
   return (
     <GalleryContainer>

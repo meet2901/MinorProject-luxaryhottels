@@ -1,4 +1,5 @@
 import { useCart } from '../context/CartContext';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../components/Button';
 
@@ -52,6 +53,7 @@ const EmptyMessage = styled.div`
 `;
 
 function BookingCart() {
+  const navigate = useNavigate();
   const { cartItems, removeFromCart, clearCart, getCartTotal } = useCart();
 
   return (
@@ -68,9 +70,9 @@ function BookingCart() {
               <CartItemCard key={item.cartId}>
                 <ItemInfo>
                   <ItemTitle>{item.name}</ItemTitle>
-                  <div>Price: ${item.price} / night</div>
+                  <div>Price: ₹{item.price} / night</div>
                 </ItemInfo>
-                <ItemPrice>${item.price}</ItemPrice>
+                <ItemPrice>₹{item.price}</ItemPrice>
                 <Button variant="outline" onClick={() => removeFromCart(item.cartId)}>
                   Remove
                 </Button>
@@ -78,13 +80,13 @@ function BookingCart() {
             ))}
           </CartList>
           <div style={{ marginTop: '2rem', textAlign: 'right', fontWeight: 'bold', fontSize: '1.25rem', color: '#16a085' }}>
-            Total: ${getCartTotal()}
+            Total: ₹{getCartTotal()}
           </div>
           <div style={{ marginTop: '1rem', textAlign: 'right' }}>
             <Button onClick={clearCart} variant="outline" style={{ marginRight: '1rem' }}>
               Clear Cart
             </Button>
-            <Button>
+            <Button onClick={() => navigate('/checkout')}>
               Proceed to Checkout
             </Button>
           </div>

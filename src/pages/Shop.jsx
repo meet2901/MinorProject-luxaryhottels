@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { getProducts } from '../services/fakeStoreService';
 
 const PageContainer = styled.div`
   max-width: 1200px;
@@ -60,21 +62,63 @@ const ProductItem = styled.div`
   }
 `;
 
-const sampleProducts = [
-  { id: 1, name: 'Hotel Branded T-Shirt', description: 'Comfortable cotton t-shirt with hotel logo.', price: '$25' },
-  { id: 2, name: 'Luxury Bath Set', description: 'Premium toiletries and bath amenities.', price: '$45' },
-  { id: 3, name: 'Souvenir Mug', description: 'Ceramic mug with hotel design.', price: '$15' },
-  { id: 4, name: 'Gift Card', description: 'Perfect gift for any occasion.', price: '$50' },
-];
-
 function Shop() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await getProducts();
+        setProducts(data);
+      } catch (err) {
+        setError('Failed to load products. Please try again later.');
+        console.error('Error fetching products:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <PageContainer>
+        <Hero>E-commerce & Add-ons</Hero>
+        <Section>
+          <SectionTitle>Hotel Shop</SectionTitle>
+          <div style={{ textAlign: 'center', padding: '4rem' }}>
+            <div>Loading products...</div>
+          </div>
+        </Section>
+      </PageContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageContainer>
+        <Hero>E-commerce & Add-ons</Hero>
+        <Section>
+          <SectionTitle>Hotel Shop</SectionTitle>
+          <div style={{ textAlign: 'center', padding: '4rem', color: '#dc3545' }}>
+            {error}
+          </div>
+        </Section>
+      </PageContainer>
+    );
+  }
+
   return (
     <PageContainer>
       <Hero>E-commerce & Add-ons</Hero>
       <Section>
         <SectionTitle>Hotel Shop</SectionTitle>
         <ProductGrid>
-          {sampleProducts.map(product => (
+          {products.map(product => (
             <ProductItem key={product.id}>
               <h3>{product.name}</h3>
               <p>{product.description}</p>

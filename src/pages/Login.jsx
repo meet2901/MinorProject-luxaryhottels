@@ -23,7 +23,7 @@ const LoginCard = styled.div`
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   padding: var(--space-4xl);
   width: 100%;
-  max-width: 450px;
+  max-width: 550px;
   position: relative;
   overflow: hidden;
 

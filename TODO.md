@@ -1,58 +1,55 @@
-# Navbar Enhancement Plan
+# Hotel Booking & Management - Task: Add More Room Cards and Create Checkout Page
 
-## Current Status: In Progress
+## Overview
+Add 10-12 more room cards to the existing room selection and create a comprehensive checkout page with payment confirmation, coupon application, and reservation validity checks.
 
-### Phase 1: Setup and Styling
-- [x] Create TODO.md with implementation steps
-- [ ] Update GlobalStyles.js with new CSS variables for enhanced styling
-- [ ] Add new color scheme and animation variables
+## Tasks
 
-### Phase 2: Header Component Restructure
-- [ ] Restructure navigation into logical groups (Core Services, Amenities, Services, Programs, Support)
-- [ ] Add mega menu system with dropdown functionality
-- [ ] Implement icons for main categories
-- [ ] Add hover effects and smooth animations
+### 1. Add More Room Cards
+- [x] Modify `src/services/hotelService.js` to include 10-12 additional room types
+- [x] Ensure rooms have diverse pricing, capacities, and amenities
+- [x] Update fallback rooms array with new room data
+- [ ] Test room display in Rooms.jsx
 
-### Phase 3: Mobile Experience Enhancement
-- [ ] Create hamburger menu for mobile devices
-- [ ] Implement slide-out navigation panel
-- [ ] Improve touch targets for mobile users
-- [ ] Add mobile-specific animations
+### 2. Create Checkout Page Component
+- [x] Create new file `src/pages/Checkout.jsx`
+- [x] Implement checkout UI with cart summary
+- [x] Add payment method selection (credit card, PayPal, etc.)
+- [x] Include payment confirmation modal/component
+- [x] Add coupon code input and validation
+- [x] Implement reservation validity checks (dates, availability)
 
-### Phase 4: Visual Design Improvements
-- [ ] Add gradient backgrounds and modern styling
-- [ ] Implement better visual hierarchy
-- [ ] Add subtle animations and transitions
-- [ ] Improve spacing and typography
+### 3. Update Cart Context for Checkout
+- [x] Modify `src/context/CartContext.jsx` to support checkout data
+- [x] Add coupon discount calculations
+- [x] Add payment method storage
+- [x] Add reservation validation logic
 
-### Phase 5: Testing and Refinement
-- [ ] Test responsive design on different screen sizes
-- [ ] Verify all navigation links work correctly
-- [ ] Check accessibility features
-- [ ] Test mobile navigation functionality
-- [ ] Performance optimization
+### 4. Update Routing
+- [x] Add checkout route to App.jsx (assuming routing is there)
+- [x] Update BookingCart.jsx to navigate to checkout page
+- [x] Ensure proper navigation flow: Cart → Checkout → Confirmation
 
-## Navigation Structure:
-### Primary Navigation (Always Visible):
-- Home
-- Rooms & Suites
-- Amenities (Dropdown)
-- Services (Dropdown)
-- Support (Dropdown)
+### 5. Implement Payment Confirmation
+- [x] Create payment confirmation component
+- [x] Add success/error states
+- [x] Include booking reference number generation
+- [x] Add email confirmation simulation
 
-### Amenities Dropdown:
-- Dining
-- Spa & Wellness
-- Events & Meetings
-- Entertainment
+### 6. Add Coupon System
+- [x] Create coupon validation logic
+- [x] Implement discount calculations
+- [x] Add predefined coupon codes for testing
+- [x] Display applied discounts in summary
 
-### Services Dropdown:
-- Travel Services
-- Gallery
-- Shop
+### 7. Reservation Validity
+- [x] Add date range validation
+- [x] Check room availability
+- [x] Validate guest count vs room capacity
+- [x] Add minimum stay requirements if needed
 
-### Support Dropdown:
-- About Us
-- Contact
-- FAQ
-- Terms & Privacy
+### 8. Testing and Polish
+- [x] Test complete booking flow
+- [x] Ensure responsive design
+- [x] Add loading states and error handling
+- [x] Polish UI/UX for checkout page

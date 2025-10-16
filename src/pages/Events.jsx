@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '../components/Button';
+import { getEventsData } from '../services/eventService';
 
 const EventsContainer = styled.div`
   max-width: var(--container-xl);
@@ -435,132 +436,63 @@ const CTADescription = styled.p`
   }
 `;
 
-// Sample data
-const eventTypes = [
-  {
-    id: 1,
-    name: "Wedding Celebrations",
-    type: "Wedding",
-    description: "Create magical memories with our comprehensive wedding packages, from intimate ceremonies to grand receptions.",
-    image: "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    capacity: "50-300 guests",
-    features: [
-      { icon: "💒", text: "Ceremony Setup" },
-      { icon: "🍾", text: "Champagne Toast" },
-      { icon: "🎵", text: "Live Music" },
-      { icon: "📸", text: "Photography" }
-    ]
-  },
-  {
-    id: 2,
-    name: "Corporate Events",
-    type: "Business",
-    description: "Professional meeting spaces and conference facilities equipped with modern technology for successful business events.",
-    image: "https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    capacity: "20-200 guests",
-    features: [
-      { icon: "💼", text: "AV Equipment" },
-      { icon: "🍽️", text: "Catering Service" },
-      { icon: "📊", text: "Presentation Setup" },
-      { icon: "🌐", text: "Video Conferencing" }
-    ]
-  },
-  {
-    id: 3,
-    name: "Birthday Parties",
-    type: "Celebration",
-    description: "Fun and memorable birthday celebrations with themed decorations, entertainment, and delicious catering options.",
-    image: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    capacity: "30-150 guests",
-    features: [
-      { icon: "🎂", text: "Birthday Cake" },
-      { icon: "🎈", text: "Decorations" },
-      { icon: "🎤", text: "Entertainment" },
-      { icon: "🎁", text: "Party Favors" }
-    ]
-  }
-];
-
-const venues = [
-  {
-    id: 1,
-    name: "Grand Ballroom",
-    description: "Elegant ballroom with crystal chandeliers and marble floors, perfect for large celebrations and formal events.",
-    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    size: "5,000 sq ft",
-    amenities: ["Crystal Chandeliers", "Marble Floors", "Stage", "Dance Floor", "Bridal Suite", "AV System"]
-  },
-  {
-    id: 2,
-    name: "Garden Terrace",
-    description: "Beautiful outdoor venue with garden views, ideal for romantic ceremonies and cocktail receptions.",
-    image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    size: "2,500 sq ft",
-    amenities: ["Garden Views", "Natural Light", "Outdoor Setting", "Fountain", "String Lights", "Weather Backup"]
-  },
-  {
-    id: 3,
-    name: "Executive Boardroom",
-    description: "Professional meeting space with modern technology and comfortable seating for business presentations.",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    size: "800 sq ft",
-    amenities: ["Video Conferencing", "Whiteboard", "Coffee Service", "High-Speed WiFi", "Presentation Screen", "Sound System"]
-  }
-];
-
-const eventServices = [
-  {
-    icon: "🎤",
-    name: "Entertainment",
-    description: "Professional DJs, live bands, and performers for your special event",
-    price: "Starting at $500"
-  },
-  {
-    icon: "📸",
-    name: "Photography",
-    description: "Professional photography and videography services to capture your memories",
-    price: "Starting at $300"
-  },
-  {
-    icon: "🍽️",
-    name: "Catering",
-    description: "Delicious catering options from our award-winning culinary team",
-    price: "Starting at $50/person"
-  },
-  {
-    icon: "🎨",
-    name: "Decorations",
-    description: "Beautiful floral arrangements and themed decorations",
-    price: "Starting at $200"
-  }
-];
-
-const eventPackages = [
-  {
-    icon: "💒",
-    name: "Complete Wedding Package",
-    description: "Everything you need for your perfect wedding day, from ceremony to reception",
-    price: 2500,
-    includes: ["Venue Rental", "Catering", "Photography", "DJ", "Decorations", "Wedding Cake"]
-  },
-  {
-    icon: "💼",
-    name: "Corporate Meeting Package",
-    description: "Professional setup for business meetings and conferences",
-    price: 800,
-    includes: ["Meeting Room", "AV Equipment", "Coffee Service", "Lunch", "Notebooks", "Parking"]
-  },
-  {
-    icon: "🎉",
-    name: "Birthday Celebration Package",
-    description: "Fun-filled birthday party with entertainment and decorations",
-    price: 600,
-    includes: ["Party Room", "Entertainment", "Birthday Cake", "Decorations", "Party Favors", "Games"]
-  }
-];
-
 function Events() {
+  const [eventsData, setEventsData] = useState({
+    eventTypes: [],
+    venues: [],
+    eventServices: [],
+    eventPackages: []
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedEventType, setSelectedEventType] = useState(null);
+
+  useEffect(() => {
+    const fetchEventsData = async () => {
+      try {
+        setLoading(true);
+        const data = await getEventsData();
+        setEventsData(data);
+      } catch (err) {
+        setError('Failed to load events information. Please try again later.');
+        console.error('Error fetching events data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEventsData();
+  }, []);
+
+  if (loading) {
+    return (
+      <EventsContainer>
+        <EventsHeader data-aos="fade-up">
+          <EventsTitle>Event Planning & Hosting</EventsTitle>
+          <EventsDescription>
+            Create unforgettable memories with our comprehensive event planning services.
+            From intimate gatherings to grand celebrations, we make every moment special.
+          </EventsDescription>
+        </EventsHeader>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>Loading events...</div>
+      </EventsContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <EventsContainer>
+        <EventsHeader data-aos="fade-up">
+          <EventsTitle>Event Planning & Hosting</EventsTitle>
+          <EventsDescription>
+            Create unforgettable memories with our comprehensive event planning services.
+            From intimate gatherings to grand celebrations, we make every moment special.
+          </EventsDescription>
+        </EventsHeader>
+        <div style={{ textAlign: 'center', padding: '2rem', color: 'red' }}>{error}</div>
+      </EventsContainer>
+    );
+  }
 
   return (
     <EventsContainer>
@@ -573,7 +505,7 @@ function Events() {
       </EventsHeader>
 
       <EventTypesGrid>
-        {eventTypes.map((eventType, index) => (
+        {(eventsData.eventTypes || []).map((eventType, index) => (
           <EventTypeCard key={eventType.id} data-aos="fade-up" data-aos-delay={100 + (index * 100)}>
             <EventTypeImage src={eventType.image}>
               <div className="capacity">
@@ -586,7 +518,7 @@ function Events() {
               <div className="event-type">{eventType.type}</div>
               <div className="description">{eventType.description}</div>
               <div className="features">
-                {eventType.features.map((feature, featureIndex) => (
+                {(eventType.features || []).map((feature, featureIndex) => (
                   <div key={featureIndex} className="feature">
                     <span className="icon">{feature.icon}</span>
                     {feature.text}
@@ -607,7 +539,7 @@ function Events() {
       <VenuesSection>
         <VenuesTitle data-aos="fade-up">Our Venues</VenuesTitle>
         <VenuesGrid>
-          {venues.map((venue, index) => (
+          {(eventsData.venues || []).map((venue, index) => (
             <VenueCard key={venue.id} data-aos="fade-up" data-aos-delay={100 + (index * 100)}>
               <VenueImage src={venue.image}>
                 <div className="size">{venue.size}</div>
@@ -616,7 +548,7 @@ function Events() {
                 <h3>{venue.name}</h3>
                 <div className="description">{venue.description}</div>
                 <div className="amenities">
-                  {venue.amenities.map((amenity, amenityIndex) => (
+                  {(venue.amenities || []).map((amenity, amenityIndex) => (
                     <span key={amenityIndex} className="amenity">{amenity}</span>
                   ))}
                 </div>
@@ -632,7 +564,7 @@ function Events() {
       <ServicesSection>
         <ServicesTitle data-aos="fade-up">Event Services</ServicesTitle>
         <ServicesGrid>
-          {eventServices.map((service, index) => (
+          {(eventsData.eventServices || []).map((service, index) => (
             <ServiceCard key={service.name} data-aos="fade-up" data-aos-delay={100 + (index * 100)}>
               <div className="service-icon">{service.icon}</div>
               <h3>{service.name}</h3>
@@ -647,13 +579,13 @@ function Events() {
       <PackagesSection>
         <PackagesTitle data-aos="fade-up">Event Packages</PackagesTitle>
         <PackagesGrid>
-          {eventPackages.map((pkg, index) => (
+          {(eventsData.eventPackages || []).map((pkg, index) => (
             <PackageCard key={pkg.name} data-aos="fade-up" data-aos-delay={100 + (index * 100)}>
               <div className="package-icon">{pkg.icon}</div>
               <h3>{pkg.name}</h3>
               <div className="package-description">{pkg.description}</div>
               <div className="package-price">
-                <span className="currency">$</span>
+                <span className="currency">₹</span>
                 {pkg.price}
               </div>
               <Button

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '../components/Button';
+import { getEntertainmentData } from '../services/entertainmentService';
 
 const EntertainmentContainer = styled.div`
   max-width: var(--container-xl);
@@ -441,161 +442,67 @@ const CTADescription = styled.p`
   }
 `;
 
-// Sample data
-const entertainmentCategories = [
-  {
-    id: 1,
-    name: "Live Music",
-    description: "Enjoy live performances from talented musicians across various genres in our intimate venues.",
-    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    activities: ["Jazz Nights", "Acoustic Sessions", "Rock Concerts", "Classical Music"]
-  },
-  {
-    id: 2,
-    name: "Comedy Shows",
-    description: "Laugh out loud with our regular comedy nights featuring both established and emerging comedians.",
-    image: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    activities: ["Stand-up Comedy", "Improv Shows", "Comedy Festivals", "Open Mic Nights"]
-  },
-  {
-    id: 3,
-    name: "Dance Performances",
-    description: "Experience breathtaking dance performances from contemporary to traditional styles.",
-    image: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    activities: ["Ballet", "Contemporary Dance", "Cultural Performances", "Dance Workshops"]
-  }
-];
-
-const shows = [
-  {
-    id: 1,
-    name: "Jazz Night with The Blue Notes",
-    date: "Friday, March 15",
-    description: "An intimate evening of smooth jazz featuring the renowned Blue Notes quartet.",
-    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    time: "8:00 PM",
-    price: "$35",
-    details: [
-      { icon: "🕐", text: "2-hour show" },
-      { icon: "🍸", text: "Drinks included" },
-      { icon: "🎵", text: "Live performance" },
-      { icon: "📍", text: "Sky Lounge" }
-    ]
-  },
-  {
-    id: 2,
-    name: "Comedy Central Presents",
-    date: "Saturday, March 16",
-    description: "Hilarious stand-up comedy featuring three top comedians from Comedy Central.",
-    image: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    time: "9:00 PM",
-    price: "$25",
-    details: [
-      { icon: "🕐", text: "90-minute show" },
-      { icon: "🍺", text: "Bar service" },
-      { icon: "🎤", text: "3 comedians" },
-      { icon: "📍", text: "Garden Terrace" }
-    ]
-  },
-  {
-    id: 3,
-    name: "Contemporary Dance Showcase",
-    date: "Sunday, March 17",
-    description: "Modern dance performances by the acclaimed City Dance Company.",
-    image: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    time: "7:00 PM",
-    price: "$40",
-    details: [
-      { icon: "🕐", text: "75-minute show" },
-      { icon: "🍷", text: "Wine reception" },
-      { icon: "💃", text: "5 performances" },
-      { icon: "📍", text: "Grand Ballroom" }
-    ]
-  }
-];
-
-const activities = [
-  {
-    icon: "🎸",
-    name: "Karaoke Night",
-    description: "Sing your heart out with our state-of-the-art karaoke system and song library",
-    duration: "Every Thursday, 8 PM - 12 AM"
-  },
-  {
-    icon: "🎲",
-    name: "Game Night",
-    description: "Board games, card games, and trivia competitions for all ages",
-    duration: "Every Wednesday, 7 PM - 10 PM"
-  },
-  {
-    icon: "🎨",
-    name: "Art & Wine",
-    description: "Creative painting sessions paired with wine tasting and light appetizers",
-    duration: "Every Tuesday, 6 PM - 9 PM"
-  },
-  {
-    icon: "💃",
-    name: "Dance Lessons",
-    description: "Learn various dance styles from professional instructors in a fun environment",
-    duration: "Every Monday, 7 PM - 8:30 PM"
-  }
-];
-
-const weeklySchedule = [
-  {
-    day: "Monday",
-    events: [
-      { time: "7:00 PM", name: "Dance Lessons" },
-      { time: "9:00 PM", name: "Piano Bar" }
-    ]
-  },
-  {
-    day: "Tuesday",
-    events: [
-      { time: "6:00 PM", name: "Art & Wine Night" },
-      { time: "8:30 PM", name: "Acoustic Sessions" }
-    ]
-  },
-  {
-    day: "Wednesday",
-    events: [
-      { time: "7:00 PM", name: "Game Night" },
-      { time: "9:00 PM", name: "Comedy Open Mic" }
-    ]
-  },
-  {
-    day: "Thursday",
-    events: [
-      { time: "8:00 PM", name: "Karaoke Night" },
-      { time: "10:00 PM", name: "DJ Night" }
-    ]
-  },
-  {
-    day: "Friday",
-    events: [
-      { time: "8:00 PM", name: "Live Jazz" },
-      { time: "10:00 PM", name: "Dance Party" }
-    ]
-  },
-  {
-    day: "Saturday",
-    events: [
-      { time: "7:00 PM", name: "Featured Show" },
-      { time: "9:00 PM", name: "Comedy Night" },
-      { time: "11:00 PM", name: "Late Night Music" }
-    ]
-  },
-  {
-    day: "Sunday",
-    events: [
-      { time: "6:00 PM", name: "Classical Music" },
-      { time: "8:00 PM", name: "Sunday Showcase" }
-    ]
-  }
-];
-
 function Entertainment() {
+  const [entertainmentData, setEntertainmentData] = useState({
+    categories: [],
+    shows: [],
+    activities: [],
+    schedule: []
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  useEffect(() => {
+    const fetchEntertainmentData = async () => {
+      try {
+        setLoading(true);
+        const data = await getEntertainmentData();
+        setEntertainmentData(data);
+      } catch (err) {
+        setError('Failed to load entertainment data. Please try again later.');
+        console.error('Error fetching entertainment data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEntertainmentData();
+  }, []);
+
+  if (loading) {
+    return (
+      <EntertainmentContainer>
+        <EntertainmentHeader data-aos="fade-up">
+          <EntertainmentTitle>Entertainment & Nightlife</EntertainmentTitle>
+          <EntertainmentDescription>
+            Experience unforgettable evenings with our diverse entertainment options,
+            from live music and comedy shows to interactive activities and special events.
+          </EntertainmentDescription>
+        </EntertainmentHeader>
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+          Loading entertainment...
+        </div>
+      </EntertainmentContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <EntertainmentContainer>
+        <EntertainmentHeader data-aos="fade-up">
+          <EntertainmentTitle>Entertainment & Nightlife</EntertainmentTitle>
+          <EntertainmentDescription>
+            Experience unforgettable evenings with our diverse entertainment options,
+            from live music and comedy shows to interactive activities and special events.
+          </EntertainmentDescription>
+        </EntertainmentHeader>
+        <div style={{ textAlign: 'center', padding: '4rem', color: '#dc3545' }}>
+          {error}
+        </div>
+      </EntertainmentContainer>
+    );
+  }
 
   return (
     <EntertainmentContainer>
@@ -608,7 +515,7 @@ function Entertainment() {
       </EntertainmentHeader>
 
       <CategoriesGrid>
-        {entertainmentCategories.map((category, index) => (
+        {(entertainmentData.categories || []).map((category, index) => (
           <CategoryCard key={category.id} data-aos="fade-up" data-aos-delay={100 + (index * 100)}>
             <CategoryImage src={category.image}>
               <div className="category-name">{category.name}</div>
@@ -617,7 +524,7 @@ function Entertainment() {
               <h3>{category.name}</h3>
               <div className="description">{category.description}</div>
               <div className="activities">
-                {category.activities.map((activity, activityIndex) => (
+                {(category.activities || []).map((activity, activityIndex) => (
                   <span key={activityIndex} className="activity">{activity}</span>
                 ))}
               </div>
@@ -635,7 +542,7 @@ function Entertainment() {
       <ShowsSection>
         <ShowsTitle data-aos="fade-up">Featured Shows</ShowsTitle>
         <ShowsGrid>
-          {shows.map((show, index) => (
+          {(entertainmentData.shows || []).map((show, index) => (
             <ShowCard key={show.id} data-aos="fade-up" data-aos-delay={100 + (index * 100)}>
               <ShowImage src={show.image}>
                 <div className="show-time">
@@ -649,7 +556,7 @@ function Entertainment() {
                 <div className="show-date">{show.date}</div>
                 <div className="description">{show.description}</div>
                 <div className="details">
-                  {show.details.map((detail, detailIndex) => (
+                  {(show.details || []).map((detail, detailIndex) => (
                     <div key={detailIndex} className="detail">
                       <span className="icon">{detail.icon}</span>
                       {detail.text}
@@ -668,7 +575,7 @@ function Entertainment() {
       <ActivitiesSection>
         <ActivitiesTitle data-aos="fade-up">Weekly Activities</ActivitiesTitle>
         <ActivitiesGrid>
-          {activities.map((activity, index) => (
+          {(entertainmentData.activities || []).map((activity, index) => (
             <ActivityCard key={activity.name} data-aos="fade-up" data-aos-delay={100 + (index * 100)}>
               <div className="activity-icon">{activity.icon}</div>
               <h3>{activity.name}</h3>
@@ -683,11 +590,11 @@ function Entertainment() {
       <ScheduleSection>
         <ScheduleTitle data-aos="fade-up">Weekly Entertainment Schedule</ScheduleTitle>
         <ScheduleGrid>
-          {weeklySchedule.map((day, index) => (
+          {(entertainmentData.schedule || []).map((day, index) => (
             <ScheduleCard key={day.day} data-aos="fade-up" data-aos-delay={100 + (index * 100)}>
               <div className="schedule-day">{day.day}</div>
               <div className="schedule-events">
-                {day.events.map((event, eventIndex) => (
+                {(day.events || []).map((event, eventIndex) => (
                   <div key={eventIndex} className="event">
                     <div className="event-time">{event.time}</div>
                     <div className="event-name">{event.name}</div>

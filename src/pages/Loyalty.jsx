@@ -613,7 +613,7 @@ function Loyalty() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="dining">Dining Spend ($)</label>
+            <label htmlFor="dining">Dining Spend (₹)</label>
             <input
               type="number"
               id="dining"
@@ -635,7 +635,7 @@ function Loyalty() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="other">Other Services ($)</label>
+            <label htmlFor="other">Other Services (₹)</label>
             <input
               type="number"
               id="other"

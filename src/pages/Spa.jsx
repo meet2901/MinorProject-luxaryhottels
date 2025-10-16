@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '../components/Button';
+import { getSpaData } from '../services/spaService';
 
 const SpaContainer = styled.div`
   max-width: var(--container-xl);
@@ -361,112 +362,54 @@ const BookingDescription = styled.p`
   }
 `;
 
-// Sample data
-const spaServices = [
-  {
-    id: 1,
-    name: "Swedish Massage",
-    category: "Massage Therapy",
-    description: "Relaxing full-body massage using long, flowing strokes to improve circulation and reduce stress.",
-    image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    duration: "60 min",
-    price: 120,
-    benefits: ["Stress Relief", "Improved Circulation", "Muscle Relaxation", "Better Sleep"]
-  },
-  {
-    id: 2,
-    name: "Deep Tissue Massage",
-    category: "Massage Therapy",
-    description: "Intensive massage targeting deep muscle layers to relieve chronic pain and muscle tension.",
-    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    duration: "90 min",
-    price: 150,
-    benefits: ["Pain Relief", "Improved Mobility", "Muscle Recovery", "Posture Correction"]
-  },
-  {
-    id: 3,
-    name: "Hot Stone Therapy",
-    category: "Specialty Treatment",
-    description: "Therapeutic massage using heated stones to deeply relax muscles and improve energy flow.",
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    duration: "75 min",
-    price: 140,
-    benefits: ["Deep Relaxation", "Pain Relief", "Improved Circulation", "Stress Reduction"]
-  },
-  {
-    id: 4,
-    name: "Aromatherapy Facial",
-    category: "Facial Treatment",
-    description: "Rejuvenating facial treatment combining essential oils with cleansing, exfoliation, and moisturizing.",
-    image: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    duration: "60 min",
-    price: 110,
-    benefits: ["Skin Rejuvenation", "Relaxation", "Improved Complexion", "Stress Relief"]
-  }
-];
 
-const facilities = [
-  {
-    icon: "🏊",
-    name: "Infinity Pool",
-    description: "Heated infinity pool with panoramic views and hydrotherapy jets for ultimate relaxation."
-  },
-  {
-    icon: "🧖",
-    name: "Steam Room",
-    description: "Traditional steam room with eucalyptus infusion for respiratory health and detoxification."
-  },
-  {
-    icon: "❄️",
-    name: "Ice Fountain",
-    description: "Cold plunge pool and ice fountain for contrast therapy and improved circulation."
-  },
-  {
-    icon: "🧘",
-    name: "Meditation Garden",
-    description: "Serene outdoor meditation space with zen gardens and peaceful water features."
-  },
-  {
-    icon: "💆",
-    name: "Treatment Rooms",
-    description: "Private treatment rooms equipped with the latest spa technology and ambient lighting."
-  },
-  {
-    icon: "🛀",
-    name: "Hydrotherapy Bath",
-    description: "Therapeutic baths with various jet configurations for targeted muscle relief."
-  }
-];
-
-const spaPackages = [
-  {
-    icon: "🌸",
-    name: "Ultimate Relaxation",
-    description: "Full day of pampering including massage, facial, and access to all facilities",
-    price: 299,
-    duration: "4 hours",
-    includes: ["60-min Massage", "Facial Treatment", "Lunch", "Pool Access"]
-  },
-  {
-    icon: "💎",
-    name: "Couples Retreat",
-    description: "Romantic spa experience for couples with side-by-side treatments",
-    price: 399,
-    duration: "3 hours",
-    includes: ["Couples Massage", "Champagne", "Chocolate", "Private Suite"]
-  },
-  {
-    icon: "🌿",
-    name: "Detox & Renew",
-    description: "Cleansing treatments focused on detoxification and skin renewal",
-    price: 199,
-    duration: "2.5 hours",
-    includes: ["Body Scrub", "Detox Wrap", "Herbal Tea", "Sauna Access"]
-  }
-];
 
 function Spa() {
+  const [spaData, setSpaData] = useState({
+    spaServices: [],
+    facilities: [],
+    spaPackages: []
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
+
+  useEffect(() => {
+    const fetchSpaData = async () => {
+      try {
+        setLoading(true);
+        const data = await getSpaData();
+        setSpaData(data);
+      } catch (err) {
+        setError('Failed to load spa data');
+        console.error('Error fetching spa data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSpaData();
+  }, []);
+
+  if (loading) {
+    return (
+      <SpaContainer>
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+          Loading spa services...
+        </div>
+      </SpaContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <SpaContainer>
+        <div style={{ textAlign: 'center', padding: 'var(--space-3xl)', color: 'red' }}>
+          {error}
+        </div>
+      </SpaContainer>
+    );
+  }
 
   return (
     <SpaContainer>
@@ -479,14 +422,14 @@ function Spa() {
       </SpaHeader>
 
       <ServicesGrid>
-        {spaServices.map((service, index) => (
+        {spaData.spaServices.map((service, index) => (
           <ServiceCard key={service.id} data-aos="fade-up" data-aos-delay={100 + (index * 100)}>
             <ServiceImage src={service.image}>
               <div className="duration">
                 <span className="icon">🕐</span>
                 {service.duration}
               </div>
-              <div className="price">${service.price}</div>
+              <div className="price">₹{service.price}</div>
             </ServiceImage>
             <ServiceInfo>
               <h3>{service.name}</h3>
@@ -514,7 +457,7 @@ function Spa() {
       <FacilitiesSection>
         <FacilitiesTitle data-aos="fade-up">Our Facilities</FacilitiesTitle>
         <FacilitiesGrid>
-          {facilities.map((facility, index) => (
+          {spaData.facilities.map((facility, index) => (
             <FacilityCard key={facility.name} data-aos="fade-up" data-aos-delay={100 + (index * 100)}>
               <div className="facility-icon">{facility.icon}</div>
               <h3>{facility.name}</h3>
@@ -527,13 +470,13 @@ function Spa() {
       <PackagesSection>
         <PackagesTitle data-aos="fade-up">Spa Packages</PackagesTitle>
         <PackagesGrid>
-          {spaPackages.map((pkg, index) => (
+          {spaData.spaPackages.map((pkg, index) => (
             <PackageCard key={pkg.name} data-aos="fade-up" data-aos-delay={100 + (index * 100)}>
               <div className="package-icon">{pkg.icon}</div>
               <h3>{pkg.name}</h3>
               <div className="package-description">{pkg.description}</div>
               <div className="package-price">
-                <span className="currency">$</span>
+                <span className="currency">₹</span>
                 {pkg.price}
               </div>
               <div className="package-duration">Duration: {pkg.duration}</div>

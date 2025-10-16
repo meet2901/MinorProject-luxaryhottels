@@ -175,7 +175,7 @@ const ProfileEdit = () => {
     email: '',
     phone: '',
     language: 'en',
-    currency: 'USD',
+    currency: 'ind',
     theme: 'light',
   });
   const [showSuccess, setShowSuccess] = useState(false);
@@ -193,7 +193,7 @@ const ProfileEdit = () => {
       email: userData.email || '',
       phone: userData.phone || '',
       language: userData.preferences?.language || 'en',
-      currency: userData.preferences?.currency || 'USD',
+      currency: userData.preferences?.currency || 'ind',
       theme: userData.preferences?.theme || 'light',
     });
   }, [navigate]);

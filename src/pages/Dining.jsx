@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '../components/Button';
+import { getDiningData } from '../services/diningService';
 
 const DiningContainer = styled.div`
   max-width: var(--container-xl);
@@ -330,96 +331,66 @@ const OfferCard = styled.div`
   }
 `;
 
-// Sample data
-const restaurants = [
-  {
-    id: 1,
-    name: "The Grand Dining Room",
-    cuisine: "Fine Dining",
-    description: "Experience culinary excellence in our elegant main dining room featuring contemporary cuisine with a focus on local ingredients.",
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    rating: 4.8,
-    hours: "6:00 PM - 10:00 PM",
-    dressCode: "Smart Casual",
-    capacity: "120 guests"
-  },
-  {
-    id: 2,
-    name: "Garden Terrace",
-    cuisine: "Mediterranean",
-    description: "Al fresco dining under the stars featuring fresh Mediterranean cuisine and an extensive wine selection.",
-    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    rating: 4.6,
-    hours: "12:00 PM - 11:00 PM",
-    dressCode: "Casual",
-    capacity: "80 guests"
-  },
-  {
-    id: 3,
-    name: "Sky Lounge",
-    cuisine: "Asian Fusion",
-    description: "Modern rooftop dining with panoramic city views and innovative Asian-inspired dishes.",
-    image: "https://images.unsplash.com/photo-1544145945-f90425340c7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    rating: 4.7,
-    hours: "5:00 PM - 12:00 AM",
-    dressCode: "Smart Casual",
-    capacity: "60 guests"
-  }
-];
-
-const menuCategories = [
-  {
-    name: "Appetizers",
-    icon: "🥗",
-    items: [
-      { name: "Seared Scallops", description: "Pan-seared diver scallops with cauliflower purée", price: "$24" },
-      { name: "Burrata Salad", description: "Fresh burrata with heirloom tomatoes and basil oil", price: "$18" },
-      { name: "Tuna Tartare", description: "Yellowfin tuna with avocado and citrus dressing", price: "$22" }
-    ]
-  },
-  {
-    name: "Main Courses",
-    icon: "🍽️",
-    items: [
-      { name: "Grilled Salmon", description: "Atlantic salmon with roasted vegetables and herb butter", price: "$38" },
-      { name: "Beef Tenderloin", description: "Prime beef tenderloin with truffle mashed potatoes", price: "$52" },
-      { name: "Duck Confit", description: "Slow-cooked duck leg with cherry gastrique", price: "$36" }
-    ]
-  },
-  {
-    name: "Desserts",
-    icon: "🍰",
-    items: [
-      { name: "Chocolate Soufflé", description: "Warm chocolate soufflé with vanilla ice cream", price: "$16" },
-      { name: "Crème Brûlée", description: "Classic vanilla bean crème brûlée", price: "$14" },
-      { name: "Tiramisu", description: "Traditional Italian tiramisu with espresso", price: "$15" }
-    ]
-  }
-];
-
-const specialOffers = [
-  {
-    icon: "🍾",
-    title: "Wine Tasting Dinner",
-    description: "Four-course dinner paired with premium wines from our cellar",
-    discount: "$89 per person"
-  },
-  {
-    icon: "🎉",
-    title: "Anniversary Special",
-    description: "Complimentary champagne and dessert for anniversary celebrations",
-    discount: "FREE"
-  },
-  {
-    icon: "👨‍👩‍👧‍👦",
-    title: "Family Sunday Brunch",
-    description: "Special family pricing with kids menu and entertainment",
-    discount: "25% OFF"
-  }
-];
-
 function Dining() {
+  const [diningData, setDiningData] = useState({
+    restaurants: [],
+    menuCategories: [],
+    specialOffers: []
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+
+  useEffect(() => {
+    const fetchDiningData = async () => {
+      try {
+        setLoading(true);
+        const data = await getDiningData();
+        setDiningData(data);
+      } catch (err) {
+        setError('Failed to load dining information. Please try again later.');
+        console.error('Error fetching dining data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDiningData();
+  }, []);
+
+  if (loading) {
+    return (
+      <DiningContainer>
+        <DiningHeader>
+          <DiningTitle data-aos="fade-up">Fine Dining Experience</DiningTitle>
+          <DiningDescription data-aos="fade-up" data-aos-delay="100">
+            Indulge in exceptional culinary experiences across our three distinctive restaurants,
+            each offering unique atmospheres and world-class cuisine.
+          </DiningDescription>
+        </DiningHeader>
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+          Loading dining information...
+        </div>
+      </DiningContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <DiningContainer>
+        <DiningHeader>
+          <DiningTitle data-aos="fade-up">Fine Dining Experience</DiningTitle>
+          <DiningDescription data-aos="fade-up" data-aos-delay="100">
+            Indulge in exceptional culinary experiences across our three distinctive restaurants,
+            each offering unique atmospheres and world-class cuisine.
+          </DiningDescription>
+        </DiningHeader>
+        <div style={{ textAlign: 'center', padding: '4rem', color: '#dc3545' }}>
+          {error}
+        </div>
+      </DiningContainer>
+    );
+  }
 
   return (
     <DiningContainer>
@@ -432,7 +403,7 @@ function Dining() {
       </DiningHeader>
 
       <RestaurantsGrid>
-        {restaurants.map((restaurant, index) => (
+        {diningData.restaurants.map((restaurant, index) => (
           <RestaurantCard key={restaurant.id} data-aos="fade-up" data-aos-delay={200 + (index * 100)}>
             <RestaurantImage src={restaurant.image}>
               <div className="rating">

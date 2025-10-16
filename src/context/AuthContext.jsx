@@ -25,14 +25,14 @@ export const AuthProvider = ({ children }) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Mock validation
-      if (email === 'admin@hotel.com' && password === 'admin123') {
+      if ((email === 'admin@hotel.com' && password === 'admin123') || (email === 'meet85734@gmail.com' && password === '1meet2005')) {
         const userData = {
-          id: 1,
-          email: 'admin@hotel.com',
-          name: 'Admin User',
+          id: email === 'admin@hotel.com' ? 1 : 2,
+          email,
+          name: email === 'admin@hotel.com' ? 'Admin User' : 'Meet Admin',
           role: 'admin',
-          avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
-          joinedDate: '2023-01-15',
+          avatar: '💀',
+          joinedDate: email === 'admin@hotel.com' ? '2023-01-15' : new Date().toISOString().split('T')[0],
           preferences: {
             language: 'en',
             currency: 'USD',
@@ -112,9 +112,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
+  const logout = async () => {
+    try {
+      setLoading(true);
+      // Simulate API call for logout
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      setUser(null);
+      localStorage.removeItem('user');
+      setError(null);
+    } catch (err) {
+      setError('Failed to logout');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const updateProfile = async (updates) => {

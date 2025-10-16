@@ -114,7 +114,7 @@ function RoomCard({ room }) {
         </RoomFeatures>
         <RoomDescription>{description}</RoomDescription>
         <PriceRow>
-          <Price>${price} <small>/night</small></Price>
+          <Price>₹{price} <small>/night</small></Price>
           <Button onClick={handleBookNow}>Book Now</Button>
         </PriceRow>
       </RoomInfo>
