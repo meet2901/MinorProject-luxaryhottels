@@ -17,7 +17,7 @@ function ProtectedRoute({ children, requireAuth = true, adminOnly = false }) {
 
   if (adminOnly && (!user || user.email !== 'meet85734@gmail.com')) {
     // Redirect to home if not admin
-    return <Navigate to="/" replace />;
+    return <Navigate to="/home" replace />;
   }
 
   if (!requireAuth && user) {
