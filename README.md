@@ -1,12 +1,16 @@
-# React + Vite
+# MinorProject Luxury Hotels
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Live Demo: https://meet2901.github.io/MinorProject-luxaryhottels/home
 
-Currently, two official plugins are available:
+This project is a React + Vite frontend deployed to GitHub Pages.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Development
+- Uses Vite with React for fast development and optimized builds.
+- Deployed under the project page path `https://meet2901.github.io/MinorProject-luxaryhottels/`.
 
-## Expanding the ESLint configuration
+### Routing
+- The default route redirects to `/home`.
+- Use the direct link above for the Home page.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Notes
+- GitHub Pages project sites live under `/REPO_NAME/`. To use `https://meet2901.github.io/home`, you need a separate repository named `meet2901.github.io` configured for a user site.
