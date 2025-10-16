@@ -417,7 +417,7 @@ function Footer() {
           <FooterSection>
             <h3>Explore</h3>
             <ul>
-              <li><Link to="/" className="footer-link">Home</Link></li>
+              <li><Link to="/home" className="footer-link">Home</Link></li>
               <li><Link to="/rooms" className="footer-link">Rooms & Suites</Link></li>
               <li><Link to="/bookings" className="footer-link">Bookings</Link></li>
               <li><Link to="/dining" className="footer-link">Restaurants</Link></li>

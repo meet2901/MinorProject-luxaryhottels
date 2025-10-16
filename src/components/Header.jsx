@@ -654,7 +654,7 @@ const Header = () => {
       setUserDropdownOpen(false);
       setMobileMenuOpen(false);
       // Navigate to home page after logout
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -729,11 +729,11 @@ const Header = () => {
   return (
     <HeaderWrapper>
       <Nav>
-        <Logo onClick={() => navigate("/")}>🏨 Luxury Hotel</Logo>
+        <Logo onClick={() => navigate("/home")}>🏨 Luxury Hotel</Logo>
 
         <NavLinks>
           <NavItem>
-            <Link to="/">
+            <Link to="/home">
               Home
             </Link>
           </NavItem>
@@ -918,7 +918,7 @@ const Header = () => {
           </div>
         )}
         
-        <Link to="/" onClick={closeMobileMenu}>
+        <Link to="/home" onClick={closeMobileMenu}>
           <FaShoppingCart size={16} style={{opacity: 0.7}} /> Home
         </Link>
         <Link to="/rooms" onClick={closeMobileMenu}>

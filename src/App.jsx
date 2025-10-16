@@ -41,7 +41,8 @@ function App() {
         <Layout>
           <Routes>
             {/* All routes are now public and accessible */}
-            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Navigate to="/home" replace />} />
             <Route path="/rooms" element={<Rooms />} />
             <Route path="/bookings" element={<Bookings />} />
             <Route path="/booking" element={<BookingForm />} />
